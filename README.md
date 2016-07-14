@@ -5,7 +5,7 @@ A opensource and free to use PHP script for generating SafeCom reports in CSV fo
 
 ## Requirements
 * PHP 5.0 or newer with CLI support
-* ODBC extension enabled
+* PHP ODBC extension enabled
 
 ## Download
 You can download the newest release at http://github.com/dotdeas/phpsr/releases/
