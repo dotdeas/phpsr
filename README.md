@@ -19,8 +19,10 @@ If you prefer to follow the git repository, the following branch and tag names m
 Usage: php phpsc.php [OPTION] ...
 
   -h    print this help
-  -r    report to use (see list below)
   -d    odbc connection name
+  -c    currency
+  -o    output filename
+  -r    report to use (see list below)
   -s    startdate (yyyy-mm-dd)
   -e    enddate (yyyy-mm-dd)
 
