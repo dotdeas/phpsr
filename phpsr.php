@@ -44,7 +44,7 @@
 		echo "  3 - Cost code printing (less)\n";
 	}
 
-	// reports functions
+	// report functions
 	function report_1($odbc,$startdate,$enddate,$outfile,$currency) {
 		consolewrite("Generating report 1 ...");
 			$conn=odbc_connect($odbc,"","");
