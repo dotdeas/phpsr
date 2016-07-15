@@ -78,14 +78,12 @@
 										$costcodedata[$data["UserCostCode"]]["print_a4_clr"]=$costcodedata[$data["UserCostCode"]]["print_a4_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["a4_sheets"]=$costcodedata[$data["UserCostCode"]]["a4_sheets"]+$data["JobSheetCount"];
 										$costcodedata[$data["UserCostCode"]]["totalcost"]=$costcodedata[$data["UserCostCode"]]["totalcost"]+$data["Price"];
-									}
-									if($data["JobPageFormat"]=="A3") {
+									} elseif($data["JobPageFormat"]=="A3") {
 										$costcodedata[$data["UserCostCode"]]["print_a3_bw"]=$costcodedata[$data["UserCostCode"]]["print_a3_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["print_a3_clr"]=$costcodedata[$data["UserCostCode"]]["print_a3_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["a3_sheets"]=$costcodedata[$data["UserCostCode"]]["a3_sheets"]+$data["JobSheetCount"];
 										$costcodedata[$data["UserCostCode"]]["totalcost"]=$costcodedata[$data["UserCostCode"]]["totalcost"]+$data["Price"];
-									}
-									if($data["JobPageFormat"]=="Executive" || $data["JobPageFormat"]=="Letter" || $data["JobPageFormat"]=="Legal" || $data["JobPageFormat"]=="Other") {
+									} else {
 										$costcodedata[$data["UserCostCode"]]["print_other_bw"]=$costcodedata[$data["UserCostCode"]]["print_other_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["print_other_clr"]=$costcodedata[$data["UserCostCode"]]["print_other_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["other_sheets"]=$costcodedata[$data["UserCostCode"]]["other_sheets"]+$data["JobSheetCount"];
@@ -98,14 +96,12 @@
 										$costcodedata[$data["UserCostCode"]]["copy_a4_clr"]=$costcodedata[$data["UserCostCode"]]["copy_a4_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["a4_sheets"]=$costcodedata[$data["UserCostCode"]]["a4_sheets"]+$data["JobSheetCount"];
 										$costcodedata[$data["UserCostCode"]]["totalcost"]=$costcodedata[$data["UserCostCode"]]["totalcost"]+$data["Price"];
-									}
-									if($data["JobPageFormat"]=="A3") {
+									} elseif($data["JobPageFormat"]=="A3") {
 										$costcodedata[$data["UserCostCode"]]["copy_a3_bw"]=$costcodedata[$data["UserCostCode"]]["copy_a3_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["copy_a3_clr"]=$costcodedata[$data["UserCostCode"]]["copy_a3_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["a3_sheets"]=$costcodedata[$data["UserCostCode"]]["a3_sheets"]+$data["JobSheetCount"];
 										$costcodedata[$data["UserCostCode"]]["totalcost"]=$costcodedata[$data["UserCostCode"]]["totalcost"]+$data["Price"];
-									}
-									if($data["JobPageFormat"]=="Executive" || $data["JobPageFormat"]=="Letter" || $data["JobPageFormat"]=="Legal" || $data["JobPageFormat"]=="Other") {
+									} else {
 										$costcodedata[$data["UserCostCode"]]["copy_other_bw"]=$costcodedata[$data["UserCostCode"]]["copy_other_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["copy_other_clr"]=$costcodedata[$data["UserCostCode"]]["copy_other_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["other_sheets"]=$costcodedata[$data["UserCostCode"]]["other_sheets"]+$data["JobSheetCount"];
@@ -191,14 +187,12 @@
 										$costcodedata[$data["UserCostCode"]]["push_a4_clr"]=$costcodedata[$data["UserCostCode"]]["push_a4_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["a4_sheets"]=$costcodedata[$data["UserCostCode"]]["a4_sheets"]+$data["JobSheetCount"];
 										$costcodedata[$data["UserCostCode"]]["totalcost"]=$costcodedata[$data["UserCostCode"]]["totalcost"]+$data["Price"];
-									}
-									if($data["JobPageFormat"]=="A3") {
+									} elseif($data["JobPageFormat"]=="A3") {
 										$costcodedata[$data["UserCostCode"]]["push_a3_bw"]=$costcodedata[$data["UserCostCode"]]["push_a3_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["push_a3_clr"]=$costcodedata[$data["UserCostCode"]]["push_a3_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["a3_sheets"]=$costcodedata[$data["UserCostCode"]]["a3_sheets"]+$data["JobSheetCount"];
 										$costcodedata[$data["UserCostCode"]]["totalcost"]=$costcodedata[$data["UserCostCode"]]["totalcost"]+$data["Price"];
-									}
-									if($data["JobPageFormat"]=="Executive" || $data["JobPageFormat"]=="Letter" || $data["JobPageFormat"]=="Legal" || $data["JobPageFormat"]=="Other") {
+									} else {
 										$costcodedata[$data["UserCostCode"]]["push_other_bw"]=$costcodedata[$data["UserCostCode"]]["push_other_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["push_other_clr"]=$costcodedata[$data["UserCostCode"]]["push_other_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["other_sheets"]=$costcodedata[$data["UserCostCode"]]["other_sheets"]+$data["JobSheetCount"];
@@ -211,14 +205,12 @@
 										$costcodedata[$data["UserCostCode"]]["pull_a4_clr"]=$costcodedata[$data["UserCostCode"]]["pull_a4_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["a4_sheets"]=$costcodedata[$data["UserCostCode"]]["a4_sheets"]+$data["JobSheetCount"];
 										$costcodedata[$data["UserCostCode"]]["totalcost"]=$costcodedata[$data["UserCostCode"]]["totalcost"]+$data["Price"];
-									}
-									if($data["JobPageFormat"]=="A3") {
+									} elseif($data["JobPageFormat"]=="A3") {
 										$costcodedata[$data["UserCostCode"]]["pull_a3_bw"]=$costcodedata[$data["UserCostCode"]]["pull_a3_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["pull_a3_clr"]=$costcodedata[$data["UserCostCode"]]["pull_a3_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["a3_sheets"]=$costcodedata[$data["UserCostCode"]]["a3_sheets"]+$data["JobSheetCount"];
 										$costcodedata[$data["UserCostCode"]]["totalcost"]=$costcodedata[$data["UserCostCode"]]["totalcost"]+$data["Price"];
-									}
-									if($data["JobPageFormat"]=="Executive" || $data["JobPageFormat"]=="Letter" || $data["JobPageFormat"]=="Legal" || $data["JobPageFormat"]=="Other") {
+									} else {
 										$costcodedata[$data["UserCostCode"]]["pull_other_bw"]=$costcodedata[$data["UserCostCode"]]["pull_other_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["pull_other_clr"]=$costcodedata[$data["UserCostCode"]]["pull_other_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["other_sheets"]=$costcodedata[$data["UserCostCode"]]["other_sheets"]+$data["JobSheetCount"];
@@ -231,14 +223,12 @@
 										$costcodedata[$data["UserCostCode"]]["copy_a4_clr"]=$costcodedata[$data["UserCostCode"]]["copy_a4_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["a4_sheets"]=$costcodedata[$data["UserCostCode"]]["a4_sheets"]+$data["JobSheetCount"];
 										$costcodedata[$data["UserCostCode"]]["totalcost"]=$costcodedata[$data["UserCostCode"]]["totalcost"]+$data["Price"];
-									}
-									if($data["JobPageFormat"]=="A3") {
+									} elseif($data["JobPageFormat"]=="A3") {
 										$costcodedata[$data["UserCostCode"]]["copy_a3_bw"]=$costcodedata[$data["UserCostCode"]]["copy_a3_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["copy_a3_clr"]=$costcodedata[$data["UserCostCode"]]["copy_a3_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["a3_sheets"]=$costcodedata[$data["UserCostCode"]]["a3_sheets"]+$data["JobSheetCount"];
 										$costcodedata[$data["UserCostCode"]]["totalcost"]=$costcodedata[$data["UserCostCode"]]["totalcost"]+$data["Price"];
-									}
-									if($data["JobPageFormat"]=="Executive" || $data["JobPageFormat"]=="Letter" || $data["JobPageFormat"]=="Legal" || $data["JobPageFormat"]=="Other") {
+									} else {
 										$costcodedata[$data["UserCostCode"]]["copy_other_bw"]=$costcodedata[$data["UserCostCode"]]["copy_other_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["copy_other_clr"]=$costcodedata[$data["UserCostCode"]]["copy_other_clr"]+$data["TrackingColorPageCount"];
 										$costcodedata[$data["UserCostCode"]]["other_sheets"]=$costcodedata[$data["UserCostCode"]]["other_sheets"]+$data["JobSheetCount"];
@@ -317,14 +307,12 @@
 									$costcodedata[$data["UserCostCode"]]["a4_clr"]=$costcodedata[$data["UserCostCode"]]["a4_clr"]+$data["TrackingColorPageCount"];
 									$costcodedata[$data["UserCostCode"]]["a4_sheets"]=$costcodedata[$data["UserCostCode"]]["a4_sheets"]+$data["JobSheetCount"];
 									$costcodedata[$data["UserCostCode"]]["totalcost"]=$costcodedata[$data["UserCostCode"]]["totalcost"]+$data["Price"];
-								}
-								if($data["JobPageFormat"]=="A3") {
+								} elseif($data["JobPageFormat"]=="A3") {
 									$costcodedata[$data["UserCostCode"]]["a3_bw"]=$costcodedata[$data["UserCostCode"]]["a3_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
 									$costcodedata[$data["UserCostCode"]]["a3_clr"]=$costcodedata[$data["UserCostCode"]]["a3_clr"]+$data["TrackingColorPageCount"];
 									$costcodedata[$data["UserCostCode"]]["a3_sheets"]=$costcodedata[$data["UserCostCode"]]["a3_sheets"]+$data["JobSheetCount"];
 									$costcodedata[$data["UserCostCode"]]["totalcost"]=$costcodedata[$data["UserCostCode"]]["totalcost"]+$data["Price"];
-								}
-								if($data["JobPageFormat"]=="Executive" || $data["JobPageFormat"]=="Letter" || $data["JobPageFormat"]=="Legal" || $data["JobPageFormat"]=="Other") {
+								} else {
 									$costcodedata[$data["UserCostCode"]]["other_bw"]=$costcodedata[$data["UserCostCode"]]["other_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
 									$costcodedata[$data["UserCostCode"]]["other_clr"]=$costcodedata[$data["UserCostCode"]]["other_clr"]+$data["TrackingColorPageCount"];
 									$costcodedata[$data["UserCostCode"]]["other_sheets"]=$costcodedata[$data["UserCostCode"]]["other_sheets"]+$data["JobSheetCount"];
@@ -373,7 +361,7 @@
 	echo "|  _  ||     |  _  ||__     |      <\n";
 	echo "|   __||__|__|   __||_______|___|__|\n";
 	echo "|__|         |__|                   \n";
-	echo "\nVersion: 0.0.1-trunk_160714\n";
+	echo "\nVersion: 0.0.0-trunk_160715\n";
 	echo "Author: Andreas (andreas@dotdeas.se)\n\n";
 	if(isset($opts["h"])) {
 		printhelp();
