@@ -25,6 +25,7 @@ Usage: php phpsc.php [OPTION] ...
   -r    report to use (see list below)
   -s    startdate (yyyy-mm-dd)
   -e    enddate (yyyy-mm-dd)
+  -m    subtract months from current date
 
 Reports:
   1 - Cost code printing

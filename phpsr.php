@@ -5,7 +5,7 @@
 	ini_set("memory_limit","256M");
 	set_time_limit(0);
 	set_error_handler("internalerror");
-	$options="d:c:o:r:s:e:h::";
+	$options="d:c:o:r:s:e:m:h::";
 
 	// functions
 	function consolewrite($input) {
@@ -18,14 +18,25 @@
 
 	function checkstartend($options) {
 		$opts=getopt($options);
-		if(!isset($opts["s"]) || $opts["s"]=="") {
+		if(isset($opts["m"]) && $opts["m"]<>"") {
+			return(subtractmonth($opts["m"]));
+		} elseif(!isset($opts["s"]) || $opts["s"]=="") {
 			consolewrite("Missing startdate, aborting!");
 			exit;
-		}
-		if(!isset($opts["e"]) || $opts["e"]=="") {
+		} elseif(!isset($opts["e"]) || $opts["e"]=="") {
 			consolewrite("Missing enddate, aborting!");
 			exit;
+		} else {
+			return($opts["s"].";".$opts["e"]);
 		}
+	}
+
+	function subtractmonth($input) {
+		$input=str_replace("-","",$input);
+		$thedate=strtotime(date("Y-m-d")." -".$input." months");
+		$firstday=date("Y-m-",$thedate)."01";
+		$lastday=date("Y-m-",$thedate).date("d",mktime(0,0,0,date("m",$thedate)+1,0,date("Y",$thedate)));
+	return($firstday.";".$lastday);
 	}
 
 	function printhelp() {
@@ -37,6 +48,7 @@
 		echo "  -r    report to use (see list below)\n";
 		echo "  -s    startdate (yyyy-mm-dd)\n";
 		echo "  -e    enddate (yyyy-mm-dd)\n";
+		echo "  -m    subtract months from current date\n";
 		echo "\n";
 		echo "Reports:\n";
 		echo "  1 - Cost code printing\n";
@@ -379,16 +391,16 @@
 	}
 	if(isset($opts["r"]) && $opts["r"]<>"") {
 		if($opts["r"]=="1") {
-			checkstartend($options);
-			report_1($opts["d"],$opts["s"],$opts["e"],$outfile,$currency);
+			$datedata=explode(";",checkstartend($options));
+			report_1($opts["d"],$datedata[0],$datedata[1],$outfile,$currency);
 		}
 		if($opts["r"]=="2") {
-			checkstartend($options);
-			report_2($opts["d"],$opts["s"],$opts["e"],$outfile,$currency);
+			$datedata=explode(";",checkstartend($options));
+			report_2($opts["d"],$datedata[0],$datedata[1],$outfile,$currency);
 		}
 		if($opts["r"]=="3") {
-			checkstartend($options);
-			report_3($opts["d"],$opts["s"],$opts["e"],$outfile,$currency);
+			$data=explode(";",checkstartend($options));
+			report_3($opts["d"],$datedata[0],$datedata[1],$outfile,$currency);
 		}
 	} else {
 		consolewrite("No report selected!");
