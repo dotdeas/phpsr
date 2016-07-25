@@ -1,0 +1,11 @@
+Name: Cost Code Printing
+Report: ccprinting
+Description: <coming soon>
+
+Name: Cost Code Printing (detailed)
+Report: ccprintingdetailed
+Description: <coming soon>
+
+Name: Cost Code Printing (less)
+Report: ccprintingless
+Description: <coming soon>
