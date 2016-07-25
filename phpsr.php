@@ -39,6 +39,38 @@
 	return($firstday.";".$lastday);
 	}
 
+	function generateoutput($report,$data,$outfile,$startdate,$enddate) {
+		consolewrite("Saving report file ...");
+		switch($report) {
+			case "ccprinting":
+				$reportname="Cost Code Printing";
+				break;
+			case "ccprintingdetailed":
+				$reportname="Cost Code Printing (detailed)";
+				break;
+			case "ccprintingless":
+				$reportname="Cost Code Printing (less)";
+				break;
+			default:
+				$reportname=$report;
+		}
+		if($outfile<>"") {
+			$filename=str_replace(".csv","",$outfile).".csv";
+		} else {
+			$filename=$report."-".$startdate."_to_".$enddate.".csv";
+		}
+		try {
+			$outfile=fopen($filename,"w");
+			fwrite($outfile,$data);
+			fclose($outfile);
+		} catch(ErrorException $e) {
+			if(isset($e) && !empty($e)){
+				consolewrite($e);
+				exit;
+			}	
+		}
+	}
+
 	function printhelp() {
 		echo "Usage: php phpsc.php [OPTION] ...\n\n";
 		echo "  -h    print this help\n";
@@ -143,15 +175,7 @@
 				$outputdata.=trim($costcodedata[$key]["totalcost"]." ".$currency);
 				$outputdata.="\r\n";
 			}
-		consolewrite("Saving report file ...");
-			if($outfile<>"") {
-				$filename=str_replace(".csv","",$outfile).".csv";
-			} else {
-				$filename="costcode-".$startdate."_to_".$enddate.".csv";
-			}
-			$outfile=fopen($filename,"w");
-			fwrite($outfile,$outputdata);
-			fclose($outfile);
+		generateoutput("ccprinting",$outputdata,$outfile,$startdate,$enddate);
 		consolewrite("Done!");
 	}
 
@@ -276,15 +300,7 @@
 				$outputdata.=trim($costcodedata[$key]["totalcost"]." ".$currency);
 				$outputdata.="\r\n";
 			}
-		consolewrite("Saving report file ...");
-			if($outfile<>"") {
-				$filename=str_replace(".csv","",$outfile).".csv";
-			} else {
-				$filename="costcode_detailed-".$startdate."_to_".$enddate.".csv";
-			}
-			$outfile=fopen($filename,"w");
-			fwrite($outfile,$outputdata);
-			fclose($outfile);
+		generateoutput("ccprintingdetailed",$outputdata,$outfile,$startdate,$enddate);
 		consolewrite("Done!");
 	}
 
@@ -347,15 +363,7 @@
 				$outputdata.=trim($costcodedata[$key]["totalcost"]." ".$currency);
 				$outputdata.="\r\n";
 			}
-		consolewrite("Saving report file ...");
-			if($outfile<>"") {
-				$filename=str_replace(".csv","",$outfile).".csv";
-			} else {
-				$filename="costcode_less-".$startdate."_to_".$enddate.".csv";
-			}
-			$outfile=fopen($filename,"w");
-			fwrite($outfile,$outputdata);
-			fclose($outfile);
+		generateoutput("ccprintingless",$outputdata,$outfile,$startdate,$enddate);
 		consolewrite("Done!");
 	}
 
