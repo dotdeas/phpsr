@@ -29,7 +29,7 @@ Usage: php phpsc.php [OPTION] ...
 ```
 
 ## Note
-This script is intended to be used in countries that uses the ISO 216 paper size standard. Reports are based on A3/A4 paper size. Letter, executive and legal papers size will be listed as other.
+This script is intended to be used in countries that uses the ISO 216 paper size standard. Reports are based on A3/A4 paper size. Letter, executive and legal paper size will be listed as other in the reports.
 
 ## Contact me
 If you found a bug, got a great idea or just want to say hello. Send me a email on andreas@dotdeas.se
