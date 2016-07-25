@@ -45,20 +45,15 @@
 		echo "  -d    odbc connection name\n";
 		echo "  -c    currency\n";
 		echo "  -o    output filename\n";
-		echo "  -r    report to use (see list below)\n";
+		echo "  -r    report to use (see reports.txt)\n";
 		echo "  -s    startdate (yyyy-mm-dd)\n";
 		echo "  -e    enddate (yyyy-mm-dd)\n";
-		echo "  -m    subtract months from current date\n";
-		echo "\n";
-		echo "Reports:\n";
-		echo "  1 - Cost code printing\n";
-		echo "  2 - Cost code printing (detailed)\n";
-		echo "  3 - Cost code printing (less)\n";
+		echo "  -m    subtract months from current date\n\n";
 	}
 
 	// report functions
-	function report_1($odbc,$startdate,$enddate,$outfile,$currency) {
-		consolewrite("Generating report 1 ...");
+	function rep_ccprinting($odbc,$startdate,$enddate,$outfile,$currency) {
+		consolewrite("Generating cost code printing report ...");
 			$conn=odbc_connect($odbc,"","");
 				$sql=odbc_prepare($conn,"SELECT TrackingPageCount,JobType,JobPageFormat,Price,TrackingColorPageCount,UserCostCode,JobSheetCount FROM sctracking.dbo.scTracking WHERE (JobType='1' OR JobType='2' OR JobType='3') AND (StartDateTime BETWEEN '".$startdate." 00:00:00' AND '".$enddate." 23:59:59')");
 				consolewrite("Collecting data from safecom database ...");
@@ -160,8 +155,8 @@
 		consolewrite("Done!");
 	}
 
-	function report_2($odbc,$startdate,$enddate,$outfile,$currency) {
-		consolewrite("Generating report 2 ...");
+	function rep_ccprintingdetailed($odbc,$startdate,$enddate,$outfile,$currency) {
+		consolewrite("Generating cost code printing (detailed) report ...");
 			$conn=odbc_connect($odbc,"","");
 				$sql=odbc_prepare($conn,"SELECT TrackingPageCount,JobType,JobPageFormat,Price,TrackingColorPageCount,UserCostCode,JobSheetCount FROM sctracking.dbo.scTracking WHERE (JobType='1' OR JobType='2' OR JobType='3') AND (StartDateTime BETWEEN '".$startdate." 00:00:00' AND '".$enddate." 23:59:59')");
 				consolewrite("Collecting data from safecom database ...");
@@ -293,8 +288,8 @@
 		consolewrite("Done!");
 	}
 
-	function report_3($odbc,$startdate,$enddate,$outfile,$currency) {
-		consolewrite("Generating report 3 ...");
+	function rep_ccprintingless($odbc,$startdate,$enddate,$outfile,$currency) {
+		consolewrite("Generating cost code printing (less) report ...");
 			$conn=odbc_connect($odbc,"","");
 				$sql=odbc_prepare($conn,"SELECT TrackingPageCount,JobType,JobPageFormat,Price,TrackingColorPageCount,UserCostCode,JobSheetCount FROM sctracking.dbo.scTracking WHERE (JobType='1' OR JobType='2' OR JobType='3') AND (StartDateTime BETWEEN '".$startdate." 00:00:00' AND '".$enddate." 23:59:59')");
 				consolewrite("Collecting data from safecom database ...");
@@ -373,7 +368,7 @@
 	echo "|  _  ||     |  _  ||__     |      <\n";
 	echo "|   __||__|__|   __||_______|___|__|\n";
 	echo "|__|         |__|                   \n";
-	echo "\nVersion: 0.0.0-trunk_160715\n";
+	echo "\nVersion: 0.0.0-trunk_160725\n";
 	echo "Author: Andreas (andreas@dotdeas.se)\n\n";
 	if(isset($opts["h"])) {
 		printhelp();
@@ -390,17 +385,17 @@
 		$currency="";
 	}
 	if(isset($opts["r"]) && $opts["r"]<>"") {
-		if($opts["r"]=="1") {
+		if($opts["r"]=="ccprinting") {
 			$datedata=explode(";",checkstartend($options));
-			report_1($opts["d"],$datedata[0],$datedata[1],$outfile,$currency);
+			rep_ccprinting($opts["d"],$datedata[0],$datedata[1],$outfile,$currency);
 		}
-		if($opts["r"]=="2") {
+		if($opts["r"]=="ccprintingdetailed") {
 			$datedata=explode(";",checkstartend($options));
-			report_2($opts["d"],$datedata[0],$datedata[1],$outfile,$currency);
+			rep_ccprintingdetailed($opts["d"],$datedata[0],$datedata[1],$outfile,$currency);
 		}
-		if($opts["r"]=="3") {
-			$data=explode(";",checkstartend($options));
-			report_3($opts["d"],$datedata[0],$datedata[1],$outfile,$currency);
+		if($opts["r"]=="ccprintingless") {
+			$datedata=explode(";",checkstartend($options));
+			rep_ccprintingless($opts["d"],$datedata[0],$datedata[1],$outfile,$currency);
 		}
 	} else {
 		consolewrite("No report selected!");
