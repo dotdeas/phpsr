@@ -376,7 +376,7 @@
 	echo "|  _  ||     |  _  ||__     |      <\n";
 	echo "|   __||__|__|   __||_______|___|__|\n";
 	echo "|__|         |__|                   \n";
-	echo "\nVersion: 0.0.0-trunk_160725\n";
+	echo "\nVersion: 0.1.0-test_release\n";
 	echo "Author: Andreas (andreas@dotdeas.se)\n\n";
 	if(isset($opts["h"])) {
 		printhelp();
