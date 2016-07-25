@@ -22,15 +22,10 @@ Usage: php phpsc.php [OPTION] ...
   -d    odbc connection name
   -c    currency
   -o    output filename
-  -r    report to use (see list below)
+  -r    report to use (see reports.txt)
   -s    startdate (yyyy-mm-dd)
   -e    enddate (yyyy-mm-dd)
   -m    subtract months from current date
-
-Reports:
-  1 - Cost code printing
-  2 - Cost code printing (detailed)
-  3 - Cost code printing (less)
 ```
 
 ## Contact me
