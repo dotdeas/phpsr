@@ -1,7 +1,7 @@
 phpSR
 =====
 
-A opensource and free to use PHP script for generating SafeCom reports in CSV format
+A opensource and free to use PHP script for generating SafeCom reports in csv-format
 
 ## Requirements
 * PHP 5.0 or newer with CLI support
@@ -27,6 +27,9 @@ Usage: php phpsc.php [OPTION] ...
   -e    enddate (yyyy-mm-dd)
   -m    subtract months from current date
 ```
+
+## Note
+This script is intended to be used in countries that uses the ISO 216 paper size standard. Reports are based on A3/A4 paper size. Letter, executive and legal papers size will be listed as other.
 
 ## Contact me
 If you found a bug, got a great idea or just want to say hello. Send me a email on andreas@dotdeas.se
