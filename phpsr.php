@@ -61,7 +61,7 @@
 				$reportname=$report;
 		}
 		if($outfile<>"") {
-			$filename=str_replace(".csv","",$outfile).".csv";
+			$filename=str_replace(".csv","",$outfile)."-".$startdate."_to_".$enddate.".csv";
 		} else {
 			$filename=$report."-".$startdate."_to_".$enddate.".csv";
 		}
