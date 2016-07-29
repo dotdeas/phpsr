@@ -457,6 +457,11 @@
 	} else {
 		$currency="";
 	}
+	if(isset($opts["x"]) && $opts["x"]<>"") {
+		$costcode=$opts["x"];
+	} else {
+		$costcode="";
+	}
 	if(isset($opts["r"]) && $opts["r"]<>"") {
 		if($opts["r"]=="ccprinting") {
 			$datedata=explode(";",checkstartend($options));
@@ -472,7 +477,7 @@
 		}
 		if($opts["r"]=="ccuserprint") {
 			$datedata=explode(";",checkstartend($options));
-			rep_ccuserprint($opts["d"],$opts["x"],$datedata[0],$datedata[1],$outfile,$currency);
+			rep_ccuserprint($opts["d"],$costcode,$datedata[0],$datedata[1],$outfile,$currency);
 		}
 	} else {
 		consolewrite("No report selected!");
