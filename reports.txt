@@ -9,3 +9,7 @@ Description:
 Name: Cost Code Printing (less)
 Report: ccprintingless
 Description: 
+
+Name: Cost Code User Printing
+Report: ccuserprint
+Description: 
