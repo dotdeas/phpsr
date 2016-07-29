@@ -5,7 +5,7 @@
 	ini_set("memory_limit","256M");
 	set_time_limit(0);
 	set_error_handler("internalerror");
-	$options="d:c:o:r:s:e:m:x:h::";
+	$options="d:c:o:r:s:e:m:x:u:h::";
 
 	// functions
 	function consolewrite($input) {
@@ -54,6 +54,9 @@
 			case "ccuserprint":
 				$reportname="Cost Code User Printing";
 				break;
+			case "userprint":
+				$reportname="User Printing";
+				break;
 			default:
 				$reportname=$report;
 		}
@@ -84,7 +87,8 @@
 		echo "  -s    startdate (yyyy-mm-dd)\n";
 		echo "  -e    enddate (yyyy-mm-dd)\n";
 		echo "  -m    subtract months from current date\n";
-		echo "  -x    cost code\n\n";
+		echo "  -x    cost code\n";
+		echo "  -u    username\n\n";
 	}
 
 	// report functions
@@ -432,6 +436,67 @@
 		consolewrite("Done!");
 	}
 
+	function rep_userprint($odbc,$username,$startdate,$enddate,$outfile,$currency) {
+		consolewrite("Generating user printing report ...");
+			$conn=odbc_connect($odbc,"","");
+				$sql=odbc_prepare($conn,"SELECT UserFullName,JobSubmitLogon,TrackingPageCount,JobType,JobPageFormat,Price,TrackingColorPageCount,JobSheetCount FROM sctracking.dbo.scTracking WHERE (JobSubmitLogon='".$username."') AND (JobType='1' OR JobType='2' OR JobType='3') AND (StartDateTime BETWEEN '".$startdate." 00:00:00' AND '".$enddate." 23:59:59')");
+				consolewrite("Collecting data from safecom database ...");
+					odbc_execute($sql);
+						consolewrite("Compiles data ...");
+							$userdata=array();
+							while($data=odbc_fetch_array($sql)) {
+								if(!array_key_exists($data["JobSubmitLogon"],$userdata)) {
+									$userdata[$data["JobSubmitLogon"]]["userfullname"]=$data["UserFullName"];
+									$userdata[$data["JobSubmitLogon"]]["a4_bw"]=0;
+									$userdata[$data["JobSubmitLogon"]]["a4_clr"]=0;
+									$userdata[$data["JobSubmitLogon"]]["a3_bw"]=0;
+									$userdata[$data["JobSubmitLogon"]]["a3_clr"]=0;
+									$userdata[$data["JobSubmitLogon"]]["other_bw"]=0;
+									$userdata[$data["JobSubmitLogon"]]["other_clr"]=0;
+									$userdata[$data["JobSubmitLogon"]]["a4_sheets"]=0;
+									$userdata[$data["JobSubmitLogon"]]["a3_sheets"]=0;
+									$userdata[$data["JobSubmitLogon"]]["other_sheets"]=0;
+									$userdata[$data["JobSubmitLogon"]]["totalcost"]=0;
+								}
+								if($data["JobPageFormat"]=="A4") {
+									$userdata[$data["JobSubmitLogon"]]["a4_bw"]=$userdata[$data["JobSubmitLogon"]]["a4_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$userdata[$data["JobSubmitLogon"]]["a4_clr"]=$userdata[$data["JobSubmitLogon"]]["a4_clr"]+$data["TrackingColorPageCount"];
+									$userdata[$data["JobSubmitLogon"]]["a4_sheets"]=$userdata[$data["JobSubmitLogon"]]["a4_sheets"]+$data["JobSheetCount"];
+									$userdata[$data["JobSubmitLogon"]]["totalcost"]=$userdata[$data["JobSubmitLogon"]]["totalcost"]+$data["Price"];
+								} elseif($data["JobPageFormat"]=="A3") {
+									$userdata[$data["JobSubmitLogon"]]["a3_bw"]=$userdata[$data["JobSubmitLogon"]]["a3_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$userdata[$data["JobSubmitLogon"]]["a3_clr"]=$userdata[$data["JobSubmitLogon"]]["a3_clr"]+$data["TrackingColorPageCount"];
+									$userdata[$data["JobSubmitLogon"]]["a3_sheets"]=$userdata[$data["JobSubmitLogon"]]["a3_sheets"]+$data["JobSheetCount"];
+									$userdata[$data["JobSubmitLogon"]]["totalcost"]=$userdata[$data["JobSubmitLogon"]]["totalcost"]+$data["Price"];
+								} else {
+									$userdata[$data["JobSubmitLogon"]]["other_bw"]=$userdata[$data["JobSubmitLogon"]]["other_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$userdata[$data["JobSubmitLogon"]]["other_clr"]=$userdata[$data["JobSubmitLogon"]]["other_clr"]+$data["TrackingColorPageCount"];
+									$userdata[$data["JobSubmitLogon"]]["other_sheets"]=$userdata[$data["JobSubmitLogon"]]["other_sheets"]+$data["JobSheetCount"];
+									$userdata[$data["JobSubmitLogon"]]["totalcost"]=$userdata[$data["JobSubmitLogon"]]["totalcost"]+$data["Price"];
+								}
+							}
+			odbc_close($conn);
+		consolewrite("Generating output ...");
+			$outputdata="Username,Name,A4 BW,A4 Color,A3 BW,A3 Color,Other BW,Other Color,A4 Sheets,A3 Sheets,Other Sheets,Cost\r\n";
+			foreach($userdata as $key => $value) {
+				$outputdata.=$key.",";
+				$outputdata.=$userdata[$key]["userfullname"].",";
+				$outputdata.=$userdata[$key]["a4_bw"].",";
+				$outputdata.=$userdata[$key]["a4_clr"].",";
+				$outputdata.=$userdata[$key]["a3_bw"].",";
+				$outputdata.=$userdata[$key]["a3_clr"].",";
+				$outputdata.=$userdata[$key]["other_bw"].",";
+				$outputdata.=$userdata[$key]["other_clr"].",";
+				$outputdata.=$userdata[$key]["a4_sheets"].",";
+				$outputdata.=$userdata[$key]["a3_sheets"].",";
+				$outputdata.=$userdata[$key]["other_sheets"].",";
+				$outputdata.=trim($userdata[$key]["totalcost"]." ".$currency);
+				$outputdata.="\r\n";
+			}
+		generateoutput("userprint",$outputdata,$outfile,$startdate,$enddate);
+		consolewrite("Done!");
+	}
+
 	// get options
 	$opts=getopt($options);
 
@@ -478,6 +543,10 @@
 		if($opts["r"]=="ccuserprint") {
 			$datedata=explode(";",checkstartend($options));
 			rep_ccuserprint($opts["d"],$costcode,$datedata[0],$datedata[1],$outfile,$currency);
+		}
+		if($opts["r"]=="userprint") {
+			$datedata=explode(";",checkstartend($options));
+			rep_userprint($opts["d"],$opts["u"],$datedata[0],$datedata[1],$outfile,$currency);
 		}
 	} else {
 		echo "No report selected!\n";
