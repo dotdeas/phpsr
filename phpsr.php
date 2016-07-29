@@ -480,6 +480,6 @@
 			rep_ccuserprint($opts["d"],$costcode,$datedata[0],$datedata[1],$outfile,$currency);
 		}
 	} else {
-		consolewrite("No report selected!");
+		echo "No report selected!\n";
 		exit;
 	}
