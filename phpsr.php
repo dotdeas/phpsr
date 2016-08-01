@@ -16,6 +16,13 @@
 		consolewrite("Error: [".$errno."] ".$errstr);
 	}
 
+	function checkodbc($odbc) {
+		if(@odbc_connect($odbc,"","",SQL_CUR_USE_ODBC)==FALSE) {
+		    echo "Invalid odbc connection!\n";
+		    exit;
+		}
+	}
+
 	function checkstartend($options) {
 		$opts=getopt($options);
 		if(isset($opts["m"]) && $opts["m"]<>"") {
@@ -670,6 +677,12 @@
 	echo "Author: Andreas (andreas@dotdeas.se)\n\n";
 	if(isset($opts["h"])) {
 		printhelp();
+		exit;
+	}
+	if(isset($opts["d"]) && $opts["d"]<>"") {
+		checkodbc($opts["d"]);
+	} else {
+		echo "No odbc connection defined!\n";
 		exit;
 	}
 	if(isset($opts["o"]) && $opts["o"]<>"") {
