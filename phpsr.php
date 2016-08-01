@@ -182,7 +182,7 @@
 				$outputdata.=$costcodedata[$key]["a4_sheets"].";";
 				$outputdata.=$costcodedata[$key]["a3_sheets"].";";
 				$outputdata.=$costcodedata[$key]["other_sheets"].";";
-				$outputdata.=trim($costcodedata[$key]["totalcost"]);
+				$outputdata.=number_format(trim($costcodedata[$key]["totalcost"]),2,",","");
 				$outputdata.="\r\n";
 			}
 		generateoutput("ccprinting",$outputdata,$outfile,$startdate,$enddate);
@@ -307,7 +307,7 @@
 				$outputdata.=$costcodedata[$key]["a4_sheets"].";";
 				$outputdata.=$costcodedata[$key]["a3_sheets"].";";
 				$outputdata.=$costcodedata[$key]["other_sheets"].";";
-				$outputdata.=trim($costcodedata[$key]["totalcost"]);
+				$outputdata.=number_format(trim($costcodedata[$key]["totalcost"]),2,",","");
 				$outputdata.="\r\n";
 			}
 		generateoutput("ccprintingdetailed",$outputdata,$outfile,$startdate,$enddate);
@@ -370,7 +370,7 @@
 				$outputdata.=$costcodedata[$key]["a4_sheets"].";";
 				$outputdata.=$costcodedata[$key]["a3_sheets"].";";
 				$outputdata.=$costcodedata[$key]["other_sheets"].";";
-				$outputdata.=trim($costcodedata[$key]["totalcost"]);
+				$outputdata.=number_format(trim($costcodedata[$key]["totalcost"]),2,",","");
 				$outputdata.="\r\n";
 			}
 		generateoutput("ccprintingless",$outputdata,$outfile,$startdate,$enddate);
@@ -431,7 +431,7 @@
 				$outputdata.=$costcodedata[$key]["a4_sheets"].";";
 				$outputdata.=$costcodedata[$key]["a3_sheets"].";";
 				$outputdata.=$costcodedata[$key]["other_sheets"].";";
-				$outputdata.=trim($costcodedata[$key]["totalcost"]);
+				$outputdata.=number_format(trim($costcodedata[$key]["totalcost"]),2,",","");
 				$outputdata.="\r\n";
 			}
 		generateoutput("ccuserprint",$outputdata,$outfile,$startdate,$enddate);
@@ -492,7 +492,7 @@
 				$outputdata.=$userdata[$key]["a4_sheets"].";";
 				$outputdata.=$userdata[$key]["a3_sheets"].";";
 				$outputdata.=$userdata[$key]["other_sheets"].";";
-				$outputdata.=trim($userdata[$key]["totalcost"]);
+				$outputdata.=number_format(trim($userdata[$key]["totalcost"]),2,",","");
 				$outputdata.="\r\n";
 			}
 		generateoutput("userprint",$outputdata,$outfile,$startdate,$enddate);
@@ -652,7 +652,7 @@
 				$outputdata.=$devicedata[$key]["a4_sheets"].";";
 				$outputdata.=$devicedata[$key]["a3_sheets"].";";
 				$outputdata.=$devicedata[$key]["other_sheets"].";";
-				$outputdata.=trim($devicedata[$key]["totalcost"]);
+				$outputdata.=number_format(trim($devicedata[$key]["totalcost"]),2,",","");
 				$outputdata.="\r\n";
 			}
 		generateoutput("deviceprint",$outputdata,$outfile,$startdate,$enddate);
