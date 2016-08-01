@@ -4,7 +4,7 @@
 	date_default_timezone_set("Europe/Stockholm");
 	ini_set("memory_limit","256M");
 	set_time_limit(0);
-	//set_error_handler("internalerror");
+	set_error_handler("internalerror");
 	$options="d:c:o:r:s:e:m:x:u:h::";
 
 	// functions
