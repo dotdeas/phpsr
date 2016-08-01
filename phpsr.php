@@ -161,28 +161,28 @@
 							}
 			odbc_close($conn);
 		consolewrite("Generating output ...");
-			$outputdata="Costcode,Print A4 BW,Print A4 Color,Print A3 BW,Print A3 Color,Print Other BW,Print Other Color,Copy A4 BW,Copy A4 Color,Copy A3 BW,Copy A3 Color,Copy Other BW,Copy Other Color,A4 Sheets,A3 Sheets,Other Sheets,Cost\r\n";
+			$outputdata="Costcode;Print A4 BW;Print A4 Color;Print A3 BW;Print A3 Color;Print Other BW;Print Other Color;Copy A4 BW;Copy A4 Color;Copy A3 BW;Copy A3 Color;Copy Other BW;Copy Other Color;A4 Sheets;A3 Sheets;Other Sheets;Cost\r\n";
 			foreach($costcodedata as $key => $value) {
 				if($key=="") {
-					$outputdata.="N/A,";
+					$outputdata.="N/A;";
 				} else {
-					$outputdata.=$key.",";
+					$outputdata.=$key.";";
 				}
-				$outputdata.=$costcodedata[$key]["print_a4_bw"].",";
-				$outputdata.=$costcodedata[$key]["print_a4_clr"].",";
-				$outputdata.=$costcodedata[$key]["print_a3_bw"].",";
-				$outputdata.=$costcodedata[$key]["print_a3_clr"].",";
-				$outputdata.=$costcodedata[$key]["print_other_bw"].",";
-				$outputdata.=$costcodedata[$key]["print_other_clr"].",";
-				$outputdata.=$costcodedata[$key]["copy_a4_bw"].",";
-				$outputdata.=$costcodedata[$key]["copy_a4_clr"].",";
-				$outputdata.=$costcodedata[$key]["copy_a3_bw"].",";
-				$outputdata.=$costcodedata[$key]["copy_a3_clr"].",";
-				$outputdata.=$costcodedata[$key]["copy_other_bw"].",";
-				$outputdata.=$costcodedata[$key]["copy_other_clr"].",";
-				$outputdata.=$costcodedata[$key]["a4_sheets"].",";
-				$outputdata.=$costcodedata[$key]["a3_sheets"].",";
-				$outputdata.=$costcodedata[$key]["other_sheets"].",";
+				$outputdata.=$costcodedata[$key]["print_a4_bw"].";";
+				$outputdata.=$costcodedata[$key]["print_a4_clr"].";";
+				$outputdata.=$costcodedata[$key]["print_a3_bw"].";";
+				$outputdata.=$costcodedata[$key]["print_a3_clr"].";";
+				$outputdata.=$costcodedata[$key]["print_other_bw"].";";
+				$outputdata.=$costcodedata[$key]["print_other_clr"].";";
+				$outputdata.=$costcodedata[$key]["copy_a4_bw"].";";
+				$outputdata.=$costcodedata[$key]["copy_a4_clr"].";";
+				$outputdata.=$costcodedata[$key]["copy_a3_bw"].";";
+				$outputdata.=$costcodedata[$key]["copy_a3_clr"].";";
+				$outputdata.=$costcodedata[$key]["copy_other_bw"].";";
+				$outputdata.=$costcodedata[$key]["copy_other_clr"].";";
+				$outputdata.=$costcodedata[$key]["a4_sheets"].";";
+				$outputdata.=$costcodedata[$key]["a3_sheets"].";";
+				$outputdata.=$costcodedata[$key]["other_sheets"].";";
 				$outputdata.=trim($costcodedata[$key]["totalcost"]." ".$currency);
 				$outputdata.="\r\n";
 			}
@@ -280,34 +280,34 @@
 							}
 			odbc_close($conn);
 		consolewrite("Generating output ...");
-			$outputdata="Costcode,Pushprint A4 BW,Pushprint A4 Color,Pushprint A3 BW,Pushprint A3 Color,Pushprint Other BW,Pushprint Other Color,Pullprint A4 BW,Pullprint A4 Color,Pullprint A3 BW,Pullprint A3 Color,Pullprint Other BW,Pullprint Other Color,Copy A4 BW,Copy A4 Color,Copy A3 BW,Copy A3 Color,Copy Other BW,Copy Other Color,A4 Sheets,A3 Sheets,Other Sheets,Cost\r\n";
+			$outputdata="Costcode;Pushprint A4 BW;Pushprint A4 Color;Pushprint A3 BW;Pushprint A3 Color;Pushprint Other BW;Pushprint Other Color;Pullprint A4 BW;Pullprint A4 Color;Pullprint A3 BW;Pullprint A3 Color;Pullprint Other BW;Pullprint Other Color;Copy A4 BW;Copy A4 Color;Copy A3 BW;Copy A3 Color;Copy Other BW;Copy Other Color;A4 Sheets;A3 Sheets;Other Sheets;Cost\r\n";
 			foreach($costcodedata as $key => $value) {
 				if($key=="") {
-					$outputdata.="N/A,";
+					$outputdata.="N/A;";
 				} else {
-					$outputdata.=$key.",";
+					$outputdata.=$key.";";
 				}
-				$outputdata.=$costcodedata[$key]["push_a4_bw"].",";
-				$outputdata.=$costcodedata[$key]["push_a4_clr"].",";
-				$outputdata.=$costcodedata[$key]["push_a3_bw"].",";
-				$outputdata.=$costcodedata[$key]["push_a3_clr"].",";
-				$outputdata.=$costcodedata[$key]["push_other_bw"].",";
-				$outputdata.=$costcodedata[$key]["push_other_clr"].",";
-				$outputdata.=$costcodedata[$key]["pull_a4_bw"].",";
-				$outputdata.=$costcodedata[$key]["pull_a4_clr"].",";
-				$outputdata.=$costcodedata[$key]["pull_a3_bw"].",";
-				$outputdata.=$costcodedata[$key]["pull_a3_clr"].",";
-				$outputdata.=$costcodedata[$key]["pull_other_bw"].",";
-				$outputdata.=$costcodedata[$key]["pull_other_clr"].",";
-				$outputdata.=$costcodedata[$key]["copy_a4_bw"].",";
-				$outputdata.=$costcodedata[$key]["copy_a4_clr"].",";
-				$outputdata.=$costcodedata[$key]["copy_a3_bw"].",";
-				$outputdata.=$costcodedata[$key]["copy_a3_clr"].",";
-				$outputdata.=$costcodedata[$key]["copy_other_bw"].",";
-				$outputdata.=$costcodedata[$key]["copy_other_clr"].",";
-				$outputdata.=$costcodedata[$key]["a4_sheets"].",";
-				$outputdata.=$costcodedata[$key]["a3_sheets"].",";
-				$outputdata.=$costcodedata[$key]["other_sheets"].",";
+				$outputdata.=$costcodedata[$key]["push_a4_bw"].";";
+				$outputdata.=$costcodedata[$key]["push_a4_clr"].";";
+				$outputdata.=$costcodedata[$key]["push_a3_bw"].";";
+				$outputdata.=$costcodedata[$key]["push_a3_clr"].";";
+				$outputdata.=$costcodedata[$key]["push_other_bw"].";";
+				$outputdata.=$costcodedata[$key]["push_other_clr"].";";
+				$outputdata.=$costcodedata[$key]["pull_a4_bw"].";";
+				$outputdata.=$costcodedata[$key]["pull_a4_clr"].";";
+				$outputdata.=$costcodedata[$key]["pull_a3_bw"].";";
+				$outputdata.=$costcodedata[$key]["pull_a3_clr"].";";
+				$outputdata.=$costcodedata[$key]["pull_other_bw"].";";
+				$outputdata.=$costcodedata[$key]["pull_other_clr"].";";
+				$outputdata.=$costcodedata[$key]["copy_a4_bw"].";";
+				$outputdata.=$costcodedata[$key]["copy_a4_clr"].";";
+				$outputdata.=$costcodedata[$key]["copy_a3_bw"].";";
+				$outputdata.=$costcodedata[$key]["copy_a3_clr"].";";
+				$outputdata.=$costcodedata[$key]["copy_other_bw"].";";
+				$outputdata.=$costcodedata[$key]["copy_other_clr"].";";
+				$outputdata.=$costcodedata[$key]["a4_sheets"].";";
+				$outputdata.=$costcodedata[$key]["a3_sheets"].";";
+				$outputdata.=$costcodedata[$key]["other_sheets"].";";
 				$outputdata.=trim($costcodedata[$key]["totalcost"]." ".$currency);
 				$outputdata.="\r\n";
 			}
@@ -355,22 +355,22 @@
 							}
 			odbc_close($conn);
 		consolewrite("Generating output ...");
-			$outputdata="Costcode,A4 BW,A4 Color,A3 BW,A3 Color,Other BW,Other Color,A4 Sheets,A3 Sheets,Other Sheets,Cost\r\n";
+			$outputdata="Costcode;A4 BW;A4 Color;A3 BW;A3 Color;Other BW;Other Color;A4 Sheets;A3 Sheets;Other Sheets;Cost\r\n";
 			foreach($costcodedata as $key => $value) {
 				if($key=="") {
-					$outputdata.="N/A,";
+					$outputdata.="N/A;";
 				} else {
-					$outputdata.=$key.",";
+					$outputdata.=$key.";";
 				}
-				$outputdata.=$costcodedata[$key]["a4_bw"].",";
-				$outputdata.=$costcodedata[$key]["a4_clr"].",";
-				$outputdata.=$costcodedata[$key]["a3_bw"].",";
-				$outputdata.=$costcodedata[$key]["a3_clr"].",";
-				$outputdata.=$costcodedata[$key]["other_bw"].",";
-				$outputdata.=$costcodedata[$key]["other_clr"].",";
-				$outputdata.=$costcodedata[$key]["a4_sheets"].",";
-				$outputdata.=$costcodedata[$key]["a3_sheets"].",";
-				$outputdata.=$costcodedata[$key]["other_sheets"].",";
+				$outputdata.=$costcodedata[$key]["a4_bw"].";";
+				$outputdata.=$costcodedata[$key]["a4_clr"].";";
+				$outputdata.=$costcodedata[$key]["a3_bw"].";";
+				$outputdata.=$costcodedata[$key]["a3_clr"].";";
+				$outputdata.=$costcodedata[$key]["other_bw"].";";
+				$outputdata.=$costcodedata[$key]["other_clr"].";";
+				$outputdata.=$costcodedata[$key]["a4_sheets"].";";
+				$outputdata.=$costcodedata[$key]["a3_sheets"].";";
+				$outputdata.=$costcodedata[$key]["other_sheets"].";";
 				$outputdata.=trim($costcodedata[$key]["totalcost"]." ".$currency);
 				$outputdata.="\r\n";
 			}
@@ -419,19 +419,19 @@
 							}
 			odbc_close($conn);
 		consolewrite("Generating output ...");
-			$outputdata="Username,Name,A4 BW,A4 Color,A3 BW,A3 Color,Other BW,Other Color,A4 Sheets,A3 Sheets,Other Sheets,Cost\r\n";
+			$outputdata="Username;Name;A4 BW;A4 Color;A3 BW;A3 Color;Other BW;Other Color;A4 Sheets;A3 Sheets;Other Sheets;Cost\r\n";
 			foreach($costcodedata as $key => $value) {
-				$outputdata.=$key.",";
-				$outputdata.=$costcodedata[$key]["userfullname"].",";
-				$outputdata.=$costcodedata[$key]["a4_bw"].",";
-				$outputdata.=$costcodedata[$key]["a4_clr"].",";
-				$outputdata.=$costcodedata[$key]["a3_bw"].",";
-				$outputdata.=$costcodedata[$key]["a3_clr"].",";
-				$outputdata.=$costcodedata[$key]["other_bw"].",";
-				$outputdata.=$costcodedata[$key]["other_clr"].",";
-				$outputdata.=$costcodedata[$key]["a4_sheets"].",";
-				$outputdata.=$costcodedata[$key]["a3_sheets"].",";
-				$outputdata.=$costcodedata[$key]["other_sheets"].",";
+				$outputdata.=$key.";";
+				$outputdata.=$costcodedata[$key]["userfullname"].";";
+				$outputdata.=$costcodedata[$key]["a4_bw"].";";
+				$outputdata.=$costcodedata[$key]["a4_clr"].";";
+				$outputdata.=$costcodedata[$key]["a3_bw"].";";
+				$outputdata.=$costcodedata[$key]["a3_clr"].";";
+				$outputdata.=$costcodedata[$key]["other_bw"].";";
+				$outputdata.=$costcodedata[$key]["other_clr"].";";
+				$outputdata.=$costcodedata[$key]["a4_sheets"].";";
+				$outputdata.=$costcodedata[$key]["a3_sheets"].";";
+				$outputdata.=$costcodedata[$key]["other_sheets"].";";
 				$outputdata.=trim($costcodedata[$key]["totalcost"]." ".$currency);
 				$outputdata.="\r\n";
 			}
@@ -480,19 +480,19 @@
 							}
 			odbc_close($conn);
 		consolewrite("Generating output ...");
-			$outputdata="Username,Name,A4 BW,A4 Color,A3 BW,A3 Color,Other BW,Other Color,A4 Sheets,A3 Sheets,Other Sheets,Cost\r\n";
+			$outputdata="Username;Name;A4 BW;A4 Color;A3 BW;A3 Color;Other BW;Other Color;A4 Sheets;A3 Sheets;Other Sheets;Cost\r\n";
 			foreach($userdata as $key => $value) {
-				$outputdata.=$key.",";
-				$outputdata.=$userdata[$key]["userfullname"].",";
-				$outputdata.=$userdata[$key]["a4_bw"].",";
-				$outputdata.=$userdata[$key]["a4_clr"].",";
-				$outputdata.=$userdata[$key]["a3_bw"].",";
-				$outputdata.=$userdata[$key]["a3_clr"].",";
-				$outputdata.=$userdata[$key]["other_bw"].",";
-				$outputdata.=$userdata[$key]["other_clr"].",";
-				$outputdata.=$userdata[$key]["a4_sheets"].",";
-				$outputdata.=$userdata[$key]["a3_sheets"].",";
-				$outputdata.=$userdata[$key]["other_sheets"].",";
+				$outputdata.=$key.";";
+				$outputdata.=$userdata[$key]["userfullname"].";";
+				$outputdata.=$userdata[$key]["a4_bw"].";";
+				$outputdata.=$userdata[$key]["a4_clr"].";";
+				$outputdata.=$userdata[$key]["a3_bw"].";";
+				$outputdata.=$userdata[$key]["a3_clr"].";";
+				$outputdata.=$userdata[$key]["other_bw"].";";
+				$outputdata.=$userdata[$key]["other_clr"].";";
+				$outputdata.=$userdata[$key]["a4_sheets"].";";
+				$outputdata.=$userdata[$key]["a3_sheets"].";";
+				$outputdata.=$userdata[$key]["other_sheets"].";";
 				$outputdata.=trim($userdata[$key]["totalcost"]." ".$currency);
 				$outputdata.="\r\n";
 			}
@@ -626,33 +626,33 @@
 							}
 			odbc_close($conn);
 		consolewrite("Generating output ...");
-			$outputdata="Device ID,Device Name,Location,Status,Pushprint A4 BW,Pushprint A4 Color,Pushprint A3 BW,Pushprint A3 Color,Pushprint Other BW,Pushprint Other Color,Pullprint A4 BW,Pullprint A4 Color,Pullprint A3 BW,Pullprint A3 Color,Pullprint Other BW,Pullprint Other Color,Copy A4 BW,Copy A4 Color,Copy A3 BW,Copy A3 Color,Copy Other BW,Copy Other Color,A4 Sheets,A3 Sheets,Other Sheets,Cost\r\n";
+			$outputdata="Device ID;Device Name;Location;Status;Pushprint A4 BW;Pushprint A4 Color;Pushprint A3 BW;Pushprint A3 Color;Pushprint Other BW;Pushprint Other Color;Pullprint A4 BW;Pullprint A4 Color;Pullprint A3 BW;Pullprint A3 Color;Pullprint Other BW;Pullprint Other Color;Copy A4 BW;Copy A4 Color;Copy A3 BW;Copy A3 Color;Copy Other BW;Copy Other Color;A4 Sheets;A3 Sheets;Other Sheets;Cost\r\n";
 			foreach($devicedata as $key => $value) {
-				$outputdata.=$key.",";
-				$outputdata.=$devicedata[$key]["name"].",";
-				$outputdata.=$devicedata[$key]["location"].",";
-				$outputdata.=$devicedata[$key]["status"].",";
-				$outputdata.=$devicedata[$key]["push_a4_bw"].",";
-				$outputdata.=$devicedata[$key]["push_a4_clr"].",";
-				$outputdata.=$devicedata[$key]["push_a3_bw"].",";
-				$outputdata.=$devicedata[$key]["push_a3_clr"].",";
-				$outputdata.=$devicedata[$key]["push_other_bw"].",";
-				$outputdata.=$devicedata[$key]["push_other_clr"].",";
-				$outputdata.=$devicedata[$key]["pull_a4_bw"].",";
-				$outputdata.=$devicedata[$key]["pull_a4_clr"].",";
-				$outputdata.=$devicedata[$key]["pull_a3_bw"].",";
-				$outputdata.=$devicedata[$key]["pull_a3_clr"].",";
-				$outputdata.=$devicedata[$key]["pull_other_bw"].",";
-				$outputdata.=$devicedata[$key]["pull_other_clr"].",";
-				$outputdata.=$devicedata[$key]["copy_a4_bw"].",";
-				$outputdata.=$devicedata[$key]["copy_a4_clr"].",";
-				$outputdata.=$devicedata[$key]["copy_a3_bw"].",";
-				$outputdata.=$devicedata[$key]["copy_a3_clr"].",";
-				$outputdata.=$devicedata[$key]["copy_other_bw"].",";
-				$outputdata.=$devicedata[$key]["copy_other_clr"].",";
-				$outputdata.=$devicedata[$key]["a4_sheets"].",";
-				$outputdata.=$devicedata[$key]["a3_sheets"].",";
-				$outputdata.=$devicedata[$key]["other_sheets"].",";
+				$outputdata.=$key.";";
+				$outputdata.=$devicedata[$key]["name"].";";
+				$outputdata.=$devicedata[$key]["location"].";";
+				$outputdata.=$devicedata[$key]["status"].";";
+				$outputdata.=$devicedata[$key]["push_a4_bw"].";";
+				$outputdata.=$devicedata[$key]["push_a4_clr"].";";
+				$outputdata.=$devicedata[$key]["push_a3_bw"].";";
+				$outputdata.=$devicedata[$key]["push_a3_clr"].";";
+				$outputdata.=$devicedata[$key]["push_other_bw"].";";
+				$outputdata.=$devicedata[$key]["push_other_clr"].";";
+				$outputdata.=$devicedata[$key]["pull_a4_bw"].";";
+				$outputdata.=$devicedata[$key]["pull_a4_clr"].";";
+				$outputdata.=$devicedata[$key]["pull_a3_bw"].";";
+				$outputdata.=$devicedata[$key]["pull_a3_clr"].";";
+				$outputdata.=$devicedata[$key]["pull_other_bw"].";";
+				$outputdata.=$devicedata[$key]["pull_other_clr"].";";
+				$outputdata.=$devicedata[$key]["copy_a4_bw"].";";
+				$outputdata.=$devicedata[$key]["copy_a4_clr"].";";
+				$outputdata.=$devicedata[$key]["copy_a3_bw"].";";
+				$outputdata.=$devicedata[$key]["copy_a3_clr"].";";
+				$outputdata.=$devicedata[$key]["copy_other_bw"].";";
+				$outputdata.=$devicedata[$key]["copy_other_clr"].";";
+				$outputdata.=$devicedata[$key]["a4_sheets"].";";
+				$outputdata.=$devicedata[$key]["a3_sheets"].";";
+				$outputdata.=$devicedata[$key]["other_sheets"].";";
 				$outputdata.=trim($devicedata[$key]["totalcost"]." ".$currency);
 				$outputdata.="\r\n";
 			}
