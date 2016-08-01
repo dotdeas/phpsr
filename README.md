@@ -25,7 +25,7 @@ Usage: php phpsc.php [OPTION] ...
   -s    startdate (yyyy-mm-dd)
   -e    enddate (yyyy-mm-dd)
   -m    subtract months from current date
-  -x    cost code
+  -c    cost code
   -u    username
 ```
 
