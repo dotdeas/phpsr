@@ -5,7 +5,7 @@
 	ini_set("memory_limit","256M");
 	set_time_limit(0);
 	set_error_handler("internalerror");
-	$options="d:c:o:r:s:e:m:x:u:h::";
+	$options="d:o:r:s:e:m:x:u:h::";
 
 	// functions
 	function consolewrite($input) {
@@ -84,7 +84,6 @@
 		echo "Usage: php phpsc.php [OPTION] ...\n\n";
 		echo "  -h    print this help\n";
 		echo "  -d    odbc connection name\n";
-		echo "  -c    currency\n";
 		echo "  -o    output filename\n";
 		echo "  -r    report to use (see reports.txt)\n";
 		echo "  -s    startdate (yyyy-mm-dd)\n";
@@ -95,7 +94,7 @@
 	}
 
 	// report functions
-	function rep_ccprinting($odbc,$startdate,$enddate,$outfile,$currency) {
+	function rep_ccprinting($odbc,$startdate,$enddate,$outfile) {
 		consolewrite("Generating cost code printing report ...");
 			$conn=odbc_connect($odbc,"","");
 				$sql=odbc_prepare($conn,"SELECT TrackingPageCount,JobType,JobPageFormat,Price,TrackingColorPageCount,UserCostCode,JobSheetCount FROM sctracking.dbo.scTracking WHERE (JobType='1' OR JobType='2' OR JobType='3') AND (StartDateTime BETWEEN '".$startdate." 00:00:00' AND '".$enddate." 23:59:59')");
@@ -183,14 +182,14 @@
 				$outputdata.=$costcodedata[$key]["a4_sheets"].";";
 				$outputdata.=$costcodedata[$key]["a3_sheets"].";";
 				$outputdata.=$costcodedata[$key]["other_sheets"].";";
-				$outputdata.=trim($costcodedata[$key]["totalcost"]." ".$currency);
+				$outputdata.=trim($costcodedata[$key]["totalcost"]);
 				$outputdata.="\r\n";
 			}
 		generateoutput("ccprinting",$outputdata,$outfile,$startdate,$enddate);
 		consolewrite("Done!");
 	}
 
-	function rep_ccprintingdetailed($odbc,$startdate,$enddate,$outfile,$currency) {
+	function rep_ccprintingdetailed($odbc,$startdate,$enddate,$outfile) {
 		consolewrite("Generating cost code printing (detailed) report ...");
 			$conn=odbc_connect($odbc,"","");
 				$sql=odbc_prepare($conn,"SELECT TrackingPageCount,JobType,JobPageFormat,Price,TrackingColorPageCount,UserCostCode,JobSheetCount FROM sctracking.dbo.scTracking WHERE (JobType='1' OR JobType='2' OR JobType='3') AND (StartDateTime BETWEEN '".$startdate." 00:00:00' AND '".$enddate." 23:59:59')");
@@ -308,14 +307,14 @@
 				$outputdata.=$costcodedata[$key]["a4_sheets"].";";
 				$outputdata.=$costcodedata[$key]["a3_sheets"].";";
 				$outputdata.=$costcodedata[$key]["other_sheets"].";";
-				$outputdata.=trim($costcodedata[$key]["totalcost"]." ".$currency);
+				$outputdata.=trim($costcodedata[$key]["totalcost"]);
 				$outputdata.="\r\n";
 			}
 		generateoutput("ccprintingdetailed",$outputdata,$outfile,$startdate,$enddate);
 		consolewrite("Done!");
 	}
 
-	function rep_ccprintingless($odbc,$startdate,$enddate,$outfile,$currency) {
+	function rep_ccprintingless($odbc,$startdate,$enddate,$outfile) {
 		consolewrite("Generating cost code printing (less) report ...");
 			$conn=odbc_connect($odbc,"","");
 				$sql=odbc_prepare($conn,"SELECT TrackingPageCount,JobType,JobPageFormat,Price,TrackingColorPageCount,UserCostCode,JobSheetCount FROM sctracking.dbo.scTracking WHERE (JobType='1' OR JobType='2' OR JobType='3') AND (StartDateTime BETWEEN '".$startdate." 00:00:00' AND '".$enddate." 23:59:59')");
@@ -371,14 +370,14 @@
 				$outputdata.=$costcodedata[$key]["a4_sheets"].";";
 				$outputdata.=$costcodedata[$key]["a3_sheets"].";";
 				$outputdata.=$costcodedata[$key]["other_sheets"].";";
-				$outputdata.=trim($costcodedata[$key]["totalcost"]." ".$currency);
+				$outputdata.=trim($costcodedata[$key]["totalcost"]);
 				$outputdata.="\r\n";
 			}
 		generateoutput("ccprintingless",$outputdata,$outfile,$startdate,$enddate);
 		consolewrite("Done!");
 	}
 
-	function rep_ccuserprint($odbc,$costcode,$startdate,$enddate,$outfile,$currency) {
+	function rep_ccuserprint($odbc,$costcode,$startdate,$enddate,$outfile) {
 		consolewrite("Generating cost code user printing report ...");
 			$conn=odbc_connect($odbc,"","");
 				$sql=odbc_prepare($conn,"SELECT UserFullName,JobSubmitLogon,TrackingPageCount,JobType,JobPageFormat,Price,TrackingColorPageCount,JobSheetCount FROM sctracking.dbo.scTracking WHERE (UserCostCode='".$costcode."') AND (JobType='1' OR JobType='2' OR JobType='3') AND (StartDateTime BETWEEN '".$startdate." 00:00:00' AND '".$enddate." 23:59:59')");
@@ -432,14 +431,14 @@
 				$outputdata.=$costcodedata[$key]["a4_sheets"].";";
 				$outputdata.=$costcodedata[$key]["a3_sheets"].";";
 				$outputdata.=$costcodedata[$key]["other_sheets"].";";
-				$outputdata.=trim($costcodedata[$key]["totalcost"]." ".$currency);
+				$outputdata.=trim($costcodedata[$key]["totalcost"]);
 				$outputdata.="\r\n";
 			}
 		generateoutput("ccuserprint",$outputdata,$outfile,$startdate,$enddate);
 		consolewrite("Done!");
 	}
 
-	function rep_userprint($odbc,$username,$startdate,$enddate,$outfile,$currency) {
+	function rep_userprint($odbc,$username,$startdate,$enddate,$outfile) {
 		consolewrite("Generating user printing report ...");
 			$conn=odbc_connect($odbc,"","");
 				$sql=odbc_prepare($conn,"SELECT UserFullName,JobSubmitLogon,TrackingPageCount,JobType,JobPageFormat,Price,TrackingColorPageCount,JobSheetCount FROM sctracking.dbo.scTracking WHERE (JobSubmitLogon='".$username."') AND (JobType='1' OR JobType='2' OR JobType='3') AND (StartDateTime BETWEEN '".$startdate." 00:00:00' AND '".$enddate." 23:59:59')");
@@ -493,14 +492,14 @@
 				$outputdata.=$userdata[$key]["a4_sheets"].";";
 				$outputdata.=$userdata[$key]["a3_sheets"].";";
 				$outputdata.=$userdata[$key]["other_sheets"].";";
-				$outputdata.=trim($userdata[$key]["totalcost"]." ".$currency);
+				$outputdata.=trim($userdata[$key]["totalcost"]);
 				$outputdata.="\r\n";
 			}
 		generateoutput("userprint",$outputdata,$outfile,$startdate,$enddate);
 		consolewrite("Done!");
 	}
 
-	function rep_deviceprint($odbc,$startdate,$enddate,$outfile,$currency) {
+	function rep_deviceprint($odbc,$startdate,$enddate,$outfile) {
 		consolewrite("Generating device printing report ...");
 			$conn=odbc_connect($odbc,"","");
 				$devicesql=odbc_prepare($conn,"SELECT DeviceId,Name,Location FROM sccore.dbo.scDeviceInfo");
@@ -653,7 +652,7 @@
 				$outputdata.=$devicedata[$key]["a4_sheets"].";";
 				$outputdata.=$devicedata[$key]["a3_sheets"].";";
 				$outputdata.=$devicedata[$key]["other_sheets"].";";
-				$outputdata.=trim($devicedata[$key]["totalcost"]." ".$currency);
+				$outputdata.=trim($devicedata[$key]["totalcost"]);
 				$outputdata.="\r\n";
 			}
 		generateoutput("deviceprint",$outputdata,$outfile,$startdate,$enddate);
@@ -680,11 +679,6 @@
 	} else {
 		$outfile="";
 	}
-	if(isset($opts["c"]) && $opts["c"]<>"") {
-		$currency=$opts["c"];
-	} else {
-		$currency="";
-	}
 	if(isset($opts["x"]) && $opts["x"]<>"") {
 		$costcode=$opts["x"];
 	} else {
@@ -693,27 +687,27 @@
 	if(isset($opts["r"]) && $opts["r"]<>"") {
 		if($opts["r"]=="ccprinting") {
 			$datedata=explode(";",checkstartend($options));
-			rep_ccprinting($opts["d"],$datedata[0],$datedata[1],$outfile,$currency);
+			rep_ccprinting($opts["d"],$datedata[0],$datedata[1],$outfile);
 		}
 		if($opts["r"]=="ccprintingdetailed") {
 			$datedata=explode(";",checkstartend($options));
-			rep_ccprintingdetailed($opts["d"],$datedata[0],$datedata[1],$outfile,$currency);
+			rep_ccprintingdetailed($opts["d"],$datedata[0],$datedata[1],$outfile);
 		}
 		if($opts["r"]=="ccprintingless") {
 			$datedata=explode(";",checkstartend($options));
-			rep_ccprintingless($opts["d"],$datedata[0],$datedata[1],$outfile,$currency);
+			rep_ccprintingless($opts["d"],$datedata[0],$datedata[1],$outfile);
 		}
 		if($opts["r"]=="ccuserprint") {
 			$datedata=explode(";",checkstartend($options));
-			rep_ccuserprint($opts["d"],$costcode,$datedata[0],$datedata[1],$outfile,$currency);
+			rep_ccuserprint($opts["d"],$costcode,$datedata[0],$datedata[1],$outfile);
 		}
 		if($opts["r"]=="userprint") {
 			$datedata=explode(";",checkstartend($options));
-			rep_userprint($opts["d"],$opts["u"],$datedata[0],$datedata[1],$outfile,$currency);
+			rep_userprint($opts["d"],$opts["u"],$datedata[0],$datedata[1],$outfile);
 		}
 		if($opts["r"]=="deviceprint") {
 			$datedata=explode(";",checkstartend($options));
-			rep_deviceprint($opts["d"],$datedata[0],$datedata[1],$outfile,$currency);
+			rep_deviceprint($opts["d"],$datedata[0],$datedata[1],$outfile);
 		}
 	} else {
 		echo "No report selected!\n";
