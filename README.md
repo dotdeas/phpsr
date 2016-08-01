@@ -20,7 +20,6 @@ Usage: php phpsc.php [OPTION] ...
 
   -h    print this help
   -d    odbc connection name
-  -c    currency
   -o    output filename
   -r    report to use (see reports.txt)
   -s    startdate (yyyy-mm-dd)
