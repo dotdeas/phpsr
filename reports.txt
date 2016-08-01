@@ -17,3 +17,7 @@ Description:
 Name: User Printing
 Report: userprint
 Description: 
+
+Name: Device Printing
+Report: deviceprint
+Description: 
