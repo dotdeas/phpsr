@@ -5,7 +5,7 @@
 	ini_set("memory_limit","256M");
 	set_time_limit(0);
 	set_error_handler("internalerror");
-	$options="d:o:r:s:e:m:x:u:h::";
+	$options="d:o:r:s:e:m:c:u:h::";
 
 	// functions
 	function consolewrite($input) {
@@ -89,7 +89,7 @@
 		echo "  -s    startdate (yyyy-mm-dd)\n";
 		echo "  -e    enddate (yyyy-mm-dd)\n";
 		echo "  -m    subtract months from current date\n";
-		echo "  -x    cost code\n";
+		echo "  -c    cost code\n";
 		echo "  -u    username\n\n";
 	}
 
@@ -679,8 +679,8 @@
 	} else {
 		$outfile="";
 	}
-	if(isset($opts["x"]) && $opts["x"]<>"") {
-		$costcode=$opts["x"];
+	if(isset($opts["c"]) && $opts["c"]<>"") {
+		$costcode=$opts["c"];
 	} else {
 		$costcode="";
 	}
