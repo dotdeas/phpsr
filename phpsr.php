@@ -503,7 +503,7 @@
 		consolewrite("Generating device printing report ...");
 			$conn=odbc_connect($odbc,"","");
 				$devicesql=odbc_prepare($conn,"SELECT DeviceId,Name,Location FROM sccore.dbo.scDeviceInfo");
-				consolewrite("Collecting device data from safecom ...");
+				consolewrite("Collecting data from safecom ...");
 					odbc_execute($devicesql);
 						consolewrite("Compiles data ...");
 							$devicedata=array();
@@ -537,92 +537,90 @@
 									}
 								}
 				$sql=odbc_prepare($conn,"SELECT DeviceId,DeviceName,DeviceLocation,TrackingPageCount,JobType,JobPageFormat,Price,TrackingColorPageCount,JobSheetCount FROM sctracking.dbo.scTracking WHERE (JobType='1' OR JobType='2' OR JobType='3') AND (StartDateTime BETWEEN '".$startdate." 00:00:00' AND '".$enddate." 23:59:59')");
-				consolewrite("Collecting device printing data from safecom ...");
 					odbc_execute($sql);
-						consolewrite("Compiles data ...");
-							while($data=odbc_fetch_array($sql)) {
-								if(!array_key_exists($data["DeviceId"],$devicedata)) {
-									$devicedata[$data["DeviceId"]]["name"]=$data["DeviceName"];
-									$devicedata[$data["DeviceId"]]["location"]=$data["DeviceLocation"];
-									$devicedata[$data["DeviceId"]]["status"]="Deleted";
-									$devicedata[$data["DeviceId"]]["push_a4_bw"]=0;
-									$devicedata[$data["DeviceId"]]["push_a4_clr"]=0;
-									$devicedata[$data["DeviceId"]]["push_a3_bw"]=0;
-									$devicedata[$data["DeviceId"]]["push_a3_clr"]=0;
-									$devicedata[$data["DeviceId"]]["push_other_bw"]=0;
-									$devicedata[$data["DeviceId"]]["push_other_clr"]=0;
-									$devicedata[$data["DeviceId"]]["pull_a4_bw"]=0;
-									$devicedata[$data["DeviceId"]]["pull_a4_clr"]=0;
-									$devicedata[$data["DeviceId"]]["pull_a3_bw"]=0;
-									$devicedata[$data["DeviceId"]]["pull_a3_clr"]=0;
-									$devicedata[$data["DeviceId"]]["pull_other_bw"]=0;
-									$devicedata[$data["DeviceId"]]["pull_other_clr"]=0;
-									$devicedata[$data["DeviceId"]]["copy_a4_bw"]=0;
-									$devicedata[$data["DeviceId"]]["copy_a4_clr"]=0;
-									$devicedata[$data["DeviceId"]]["copy_a3_bw"]=0;
-									$devicedata[$data["DeviceId"]]["copy_a3_clr"]=0;
-									$devicedata[$data["DeviceId"]]["copy_other_bw"]=0;
-									$devicedata[$data["DeviceId"]]["copy_other_clr"]=0;
-									$devicedata[$data["DeviceId"]]["a4_sheets"]=0;
-									$devicedata[$data["DeviceId"]]["a3_sheets"]=0;
-									$devicedata[$data["DeviceId"]]["other_sheets"]=0;
-									$devicedata[$data["DeviceId"]]["totalcost"]=0;
-								}
-								if($data["JobType"]=="1") {
-									if($data["JobPageFormat"]=="A4") {
-										$devicedata[$data["DeviceId"]]["push_a4_bw"]=$devicedata[$data["DeviceId"]]["push_a4_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["push_a4_clr"]=$devicedata[$data["DeviceId"]]["push_a4_clr"]+$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["a4_sheets"]=$devicedata[$data["DeviceId"]]["a4_sheets"]+$data["JobSheetCount"];
-										$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
-									} elseif($data["JobPageFormat"]=="A3") {
-										$devicedata[$data["DeviceId"]]["push_a3_bw"]=$devicedata[$data["DeviceId"]]["push_a3_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["push_a3_clr"]=$devicedata[$data["DeviceId"]]["push_a3_clr"]+$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["a3_sheets"]=$devicedata[$data["DeviceId"]]["a3_sheets"]+$data["JobSheetCount"];
-										$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
-									} else {
-										$devicedata[$data["DeviceId"]]["push_other_bw"]=$devicedata[$data["DeviceId"]]["push_other_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["push_other_clr"]=$devicedata[$data["DeviceId"]]["push_other_clr"]+$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["other_sheets"]=$devicedata[$data["DeviceId"]]["other_sheets"]+$data["JobSheetCount"];
-										$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
-									}
-								}
-								if($data["JobType"]=="2") {
-									if($data["JobPageFormat"]=="A4") {
-										$devicedata[$data["DeviceId"]]["pull_a4_bw"]=$devicedata[$data["DeviceId"]]["pull_a4_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["pull_a4_clr"]=$devicedata[$data["DeviceId"]]["pull_a4_clr"]+$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["a4_sheets"]=$devicedata[$data["DeviceId"]]["a4_sheets"]+$data["JobSheetCount"];
-										$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
-									} elseif($data["JobPageFormat"]=="A3") {
-										$devicedata[$data["DeviceId"]]["pull_a3_bw"]=$devicedata[$data["DeviceId"]]["pull_a3_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["pull_a3_clr"]=$devicedata[$data["DeviceId"]]["pull_a3_clr"]+$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["a3_sheets"]=$devicedata[$data["DeviceId"]]["a3_sheets"]+$data["JobSheetCount"];
-										$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
-									} else {
-										$devicedata[$data["DeviceId"]]["pull_other_bw"]=$devicedata[$data["DeviceId"]]["pull_other_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["pull_other_clr"]=$devicedata[$data["DeviceId"]]["pull_other_clr"]+$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["other_sheets"]=$devicedata[$data["DeviceId"]]["other_sheets"]+$data["JobSheetCount"];
-										$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
-									}
-								}
-								if($data["JobType"]=="3") {
-									if($data["JobPageFormat"]=="A4") {
-										$devicedata[$data["DeviceId"]]["copy_a4_bw"]=$devicedata[$data["DeviceId"]]["copy_a4_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["copy_a4_clr"]=$devicedata[$data["DeviceId"]]["copy_a4_clr"]+$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["a4_sheets"]=$devicedata[$data["DeviceId"]]["a4_sheets"]+$data["JobSheetCount"];
-										$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
-									} elseif($data["JobPageFormat"]=="A3") {
-										$devicedata[$data["DeviceId"]]["copy_a3_bw"]=$devicedata[$data["DeviceId"]]["copy_a3_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["copy_a3_clr"]=$devicedata[$data["DeviceId"]]["copy_a3_clr"]+$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["a3_sheets"]=$devicedata[$data["DeviceId"]]["a3_sheets"]+$data["JobSheetCount"];
-										$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
-									} else {
-										$devicedata[$data["DeviceId"]]["copy_other_bw"]=$devicedata[$data["DeviceId"]]["copy_other_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["copy_other_clr"]=$devicedata[$data["DeviceId"]]["copy_other_clr"]+$data["TrackingColorPageCount"];
-										$devicedata[$data["DeviceId"]]["other_sheets"]=$devicedata[$data["DeviceId"]]["other_sheets"]+$data["JobSheetCount"];
-										$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
-									}
+						while($data=odbc_fetch_array($sql)) {
+							if(!array_key_exists($data["DeviceId"],$devicedata)) {
+								$devicedata[$data["DeviceId"]]["name"]=$data["DeviceName"];
+								$devicedata[$data["DeviceId"]]["location"]=$data["DeviceLocation"];
+								$devicedata[$data["DeviceId"]]["status"]="Deleted";
+								$devicedata[$data["DeviceId"]]["push_a4_bw"]=0;
+								$devicedata[$data["DeviceId"]]["push_a4_clr"]=0;
+								$devicedata[$data["DeviceId"]]["push_a3_bw"]=0;
+								$devicedata[$data["DeviceId"]]["push_a3_clr"]=0;
+								$devicedata[$data["DeviceId"]]["push_other_bw"]=0;
+								$devicedata[$data["DeviceId"]]["push_other_clr"]=0;
+								$devicedata[$data["DeviceId"]]["pull_a4_bw"]=0;
+								$devicedata[$data["DeviceId"]]["pull_a4_clr"]=0;
+								$devicedata[$data["DeviceId"]]["pull_a3_bw"]=0;
+								$devicedata[$data["DeviceId"]]["pull_a3_clr"]=0;
+								$devicedata[$data["DeviceId"]]["pull_other_bw"]=0;
+								$devicedata[$data["DeviceId"]]["pull_other_clr"]=0;
+								$devicedata[$data["DeviceId"]]["copy_a4_bw"]=0;
+								$devicedata[$data["DeviceId"]]["copy_a4_clr"]=0;
+								$devicedata[$data["DeviceId"]]["copy_a3_bw"]=0;
+								$devicedata[$data["DeviceId"]]["copy_a3_clr"]=0;
+								$devicedata[$data["DeviceId"]]["copy_other_bw"]=0;
+								$devicedata[$data["DeviceId"]]["copy_other_clr"]=0;
+								$devicedata[$data["DeviceId"]]["a4_sheets"]=0;
+								$devicedata[$data["DeviceId"]]["a3_sheets"]=0;
+								$devicedata[$data["DeviceId"]]["other_sheets"]=0;
+								$devicedata[$data["DeviceId"]]["totalcost"]=0;
+							}
+							if($data["JobType"]=="1") {
+								if($data["JobPageFormat"]=="A4") {
+									$devicedata[$data["DeviceId"]]["push_a4_bw"]=$devicedata[$data["DeviceId"]]["push_a4_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["push_a4_clr"]=$devicedata[$data["DeviceId"]]["push_a4_clr"]+$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["a4_sheets"]=$devicedata[$data["DeviceId"]]["a4_sheets"]+$data["JobSheetCount"];
+									$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
+								} elseif($data["JobPageFormat"]=="A3") {
+									$devicedata[$data["DeviceId"]]["push_a3_bw"]=$devicedata[$data["DeviceId"]]["push_a3_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["push_a3_clr"]=$devicedata[$data["DeviceId"]]["push_a3_clr"]+$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["a3_sheets"]=$devicedata[$data["DeviceId"]]["a3_sheets"]+$data["JobSheetCount"];
+									$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
+								} else {
+									$devicedata[$data["DeviceId"]]["push_other_bw"]=$devicedata[$data["DeviceId"]]["push_other_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["push_other_clr"]=$devicedata[$data["DeviceId"]]["push_other_clr"]+$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["other_sheets"]=$devicedata[$data["DeviceId"]]["other_sheets"]+$data["JobSheetCount"];
+									$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
 								}
 							}
+							if($data["JobType"]=="2") {
+								if($data["JobPageFormat"]=="A4") {
+									$devicedata[$data["DeviceId"]]["pull_a4_bw"]=$devicedata[$data["DeviceId"]]["pull_a4_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["pull_a4_clr"]=$devicedata[$data["DeviceId"]]["pull_a4_clr"]+$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["a4_sheets"]=$devicedata[$data["DeviceId"]]["a4_sheets"]+$data["JobSheetCount"];
+									$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
+								} elseif($data["JobPageFormat"]=="A3") {
+									$devicedata[$data["DeviceId"]]["pull_a3_bw"]=$devicedata[$data["DeviceId"]]["pull_a3_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["pull_a3_clr"]=$devicedata[$data["DeviceId"]]["pull_a3_clr"]+$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["a3_sheets"]=$devicedata[$data["DeviceId"]]["a3_sheets"]+$data["JobSheetCount"];
+									$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
+								} else {
+									$devicedata[$data["DeviceId"]]["pull_other_bw"]=$devicedata[$data["DeviceId"]]["pull_other_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["pull_other_clr"]=$devicedata[$data["DeviceId"]]["pull_other_clr"]+$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["other_sheets"]=$devicedata[$data["DeviceId"]]["other_sheets"]+$data["JobSheetCount"];
+									$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
+								}
+							}
+							if($data["JobType"]=="3") {
+								if($data["JobPageFormat"]=="A4") {
+									$devicedata[$data["DeviceId"]]["copy_a4_bw"]=$devicedata[$data["DeviceId"]]["copy_a4_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["copy_a4_clr"]=$devicedata[$data["DeviceId"]]["copy_a4_clr"]+$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["a4_sheets"]=$devicedata[$data["DeviceId"]]["a4_sheets"]+$data["JobSheetCount"];
+									$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
+								} elseif($data["JobPageFormat"]=="A3") {
+									$devicedata[$data["DeviceId"]]["copy_a3_bw"]=$devicedata[$data["DeviceId"]]["copy_a3_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["copy_a3_clr"]=$devicedata[$data["DeviceId"]]["copy_a3_clr"]+$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["a3_sheets"]=$devicedata[$data["DeviceId"]]["a3_sheets"]+$data["JobSheetCount"];
+									$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
+								} else {
+									$devicedata[$data["DeviceId"]]["copy_other_bw"]=$devicedata[$data["DeviceId"]]["copy_other_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["copy_other_clr"]=$devicedata[$data["DeviceId"]]["copy_other_clr"]+$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["other_sheets"]=$devicedata[$data["DeviceId"]]["other_sheets"]+$data["JobSheetCount"];
+									$devicedata[$data["DeviceId"]]["totalcost"]=$devicedata[$data["DeviceId"]]["totalcost"]+$data["Price"];
+								}
+							}
+						}
 			odbc_close($conn);
 		consolewrite("Generating output ...");
 			$outputdata="Device ID;Device Name;Location;Status;Pushprint A4 BW;Pushprint A4 Color;Pushprint A3 BW;Pushprint A3 Color;Pushprint Other BW;Pushprint Other Color;Pullprint A4 BW;Pullprint A4 Color;Pullprint A3 BW;Pullprint A3 Color;Pullprint Other BW;Pullprint Other Color;Copy A4 BW;Copy A4 Color;Copy A3 BW;Copy A3 Color;Copy Other BW;Copy Other Color;A4 Sheets;A3 Sheets;Other Sheets;Cost\r\n";
