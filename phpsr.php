@@ -671,13 +671,13 @@
 	function rep_devicetracking($odbc,$deviceid,$startdate,$enddate,$outfile) {
 		consolewrite("Generating device tracking report ...");
 			$conn=odbc_connect($odbc,"","");
-				$sql=odbc_prepare($conn,"SELECT StartDateTime,EndDateTime,ParserPageCount,DriverPageCount,TrackingPageCount,UserLogon,JobDateTime,JobType,JobPageFormat,JobIsDuplex,JobIsColor,Price,PageCountModel,TrackingColorPageCount,PMQueueName,PMPortName,UserCostCode,JobSheetCount FROM sctracking.dbo.scTracking WHERE DeviceId='".$deviceid."' AND (StartDateTime BETWEEN '".$startdate." 00:00:00' AND '".$enddate." 23:59:59')");
+				$sql=odbc_prepare($conn,"SELECT StartDateTime,EndDateTime,ParserPageCount,DriverPageCount,TrackingPageCount,UserLogon,JobName,JobDateTime,JobType,JobSubmitLogon,JobSize,JobDriverName,JobPageFormat,JobIsDuplex,JobIsColor,Price,PageCountModel,TrackingColorPageCount,PMQueueName,PMPortName,UserCostCode,JobSheetCount FROM sctracking.dbo.scTracking WHERE DeviceId='".$deviceid."' AND (StartDateTime BETWEEN '".$startdate." 00:00:00' AND '".$enddate." 23:59:59')");
 				consolewrite("Collecting data from safecom ...");
 					odbc_execute($sql);
 						consolewrite("Generating output ...");
 							$outputdata="StartDateTime;EndDateTime;ParserPageCount;DriverPageCount;TrackingPageCount;UserLogon;JobDateTime;JobType;JobPageFormat;JobIsDuplex;JobIsColor;Price;PageCountModel;TrackingColorPageCount;PMQueueName;PMPortName;UserCostCode;JobSheetCount\r\n";
 								while($data=odbc_fetch_array($sql)) {
-									$outputdata.=$data["StartDateTime"].";".$data["EndDateTime"].";".$data["ParserPageCount"].";".$data["DriverPageCount"].";".$data["TrackingPageCount"].";".$data["UserLogon"].";".$data["JobDateTime"].";".$data["JobType"].";".$data["JobPageFormat"].";".$data["JobIsDuplex"].";".$data["JobIsColor"].";".$data["Price"].";".$data["PageCountModel"].";".$data["TrackingColorPageCount"].";".$data["PMQueueName"].";".$data["PMPortName"].";".$data["UserCostCode"].";".$data["JobSheetCount"]."\r\n";
+									$outputdata.=$data["StartDateTime"].";".$data["EndDateTime"].";".$data["ParserPageCount"].";".$data["DriverPageCount"].";".$data["TrackingPageCount"].";".$data["UserLogon"].";".$data["JobName"].";".$data["JobDateTime"].";".$data["JobType"].";".$data["JobSubmitLogon"].";".$data["JobSize"].";".$data["JobDriverName"].";".$data["JobPageFormat"].";".$data["JobIsDuplex"].";".$data["JobIsColor"].";".$data["Price"].";".$data["PageCountModel"].";".$data["TrackingColorPageCount"].";".$data["PMQueueName"].";".$data["PMPortName"].";".$data["UserCostCode"].";".$data["JobSheetCount"]."\r\n";
 								}
 			odbc_close($conn);
 		generateoutput("devicetracking",$outputdata,$outfile,$startdate,$enddate);
