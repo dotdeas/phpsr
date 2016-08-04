@@ -27,6 +27,7 @@ Usage: php phpsc.php [OPTION] ...
   -m    subtract months from current date
   -c    cost code
   -u    username
+  -i    device id
 ```
 
 ## Note

@@ -5,7 +5,7 @@
 	ini_set("memory_limit","256M");
 	set_time_limit(0);
 	set_error_handler("internalerror");
-	$options="d:o:r:s:e:m:c:u:h::";
+	$options="d:o:r:s:e:m:c:u:i:h::";
 
 	// functions
 	function consolewrite($input) {
@@ -67,6 +67,9 @@
 			case "deviceprint":
 				$reportname="Device Printing";
 				break;
+			case "devicetracking":
+				$reportname="Device Tracking";
+				break;
 			default:
 				$reportname=$report;
 		}
@@ -97,7 +100,8 @@
 		echo "  -e    enddate (yyyy-mm-dd)\n";
 		echo "  -m    subtract months from current date\n";
 		echo "  -c    cost code\n";
-		echo "  -u    username\n\n";
+		echo "  -u    username\n";
+		echo "  -i    device id\n\n";
 	}
 
 	// report functions
@@ -664,6 +668,22 @@
 		consolewrite("Done!");
 	}
 
+	function rep_devicetracking($odbc,$deviceid,$startdate,$enddate,$outfile) {
+		consolewrite("Generating device tracking report ...");
+			$conn=odbc_connect($odbc,"","");
+				$sql=odbc_prepare($conn,"SELECT StartDateTime,EndDateTime,ParserPageCount,DriverPageCount,TrackingPageCount,UserLogon,JobDateTime,JobType,JobPageFormat,JobIsDuplex,JobIsColor,Price,PageCountModel,TrackingColorPageCount,PMQueueName,PMPortName,UserCostCode,JobSheetCount FROM sctracking.dbo.scTracking WHERE DeviceId='".$deviceid."' AND (StartDateTime BETWEEN '".$startdate." 00:00:00' AND '".$enddate." 23:59:59')");
+				consolewrite("Collecting data from safecom ...");
+					odbc_execute($sql);
+						consolewrite("Generating output ...");
+							$outputdata="StartDateTime;EndDateTime;ParserPageCount;DriverPageCount;TrackingPageCount;UserLogon;JobDateTime;JobType;JobPageFormat;JobIsDuplex;JobIsColor;Price;PageCountModel;TrackingColorPageCount;PMQueueName;PMPortName;UserCostCode;JobSheetCount\r\n";
+								while($data=odbc_fetch_array($sql)) {
+									$outputdata.=$data["StartDateTime"].";".$data["EndDateTime"].";".$data["ParserPageCount"].";".$data["DriverPageCount"].";".$data["TrackingPageCount"].";".$data["UserLogon"].";".$data["JobDateTime"].";".$data["JobType"].";".$data["JobPageFormat"].";".$data["JobIsDuplex"].";".$data["JobIsColor"].";".$data["Price"].";".$data["PageCountModel"].";".$data["TrackingColorPageCount"].";".$data["PMQueueName"].";".$data["PMPortName"].";".$data["UserCostCode"].";".$data["JobSheetCount"]."\r\n";
+								}
+			odbc_close($conn);
+		generateoutput("devicetracking",$outputdata,$outfile,$startdate,$enddate);
+		consolewrite("Done!");
+	}
+
 	// get options
 	$opts=getopt($options);
 
@@ -673,7 +693,7 @@
 	echo "|  _  ||     |  _  ||__     |      <\n";
 	echo "|   __||__|__|   __||_______|___|__|\n";
 	echo "|__|         |__|                   \n";
-	echo "\nVersion: 0.2.0-trunk_160801\n";
+	echo "\nVersion: 0.2.0-trunk_160804\n";
 	echo "Author: Andreas (andreas@dotdeas.se)\n\n";
 	if(isset($opts["h"])) {
 		printhelp();
@@ -719,6 +739,10 @@
 		if($opts["r"]=="deviceprint") {
 			$datedata=explode(";",checkstartend($options));
 			rep_deviceprint($opts["d"],$datedata[0],$datedata[1],$outfile);
+		}
+		if($opts["r"]=="devicetracking") {
+			$datedata=explode(";",checkstartend($options));
+			rep_devicetracking($opts["d"],$opts["i"],$datedata[0],$datedata[1],$outfile);
 		}
 	} else {
 		echo "No report selected!\n";
