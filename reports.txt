@@ -9,3 +9,19 @@ Description:
 Name: Cost Code Printing (less)
 Report: ccprintingless
 Description: 
+
+Name: Cost Code User Printing
+Report: ccuserprint
+Description: 
+
+Name: User Printing
+Report: userprint
+Description: 
+
+Name: Device Printing
+Report: deviceprint
+Description: 
+
+Name: Device Tracking
+Report: devicetracking
+Description: 

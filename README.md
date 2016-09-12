@@ -20,12 +20,14 @@ Usage: php phpsc.php [OPTION] ...
 
   -h    print this help
   -d    odbc connection name
-  -c    currency
   -o    output filename
   -r    report to use (see reports.txt)
   -s    startdate (yyyy-mm-dd)
   -e    enddate (yyyy-mm-dd)
   -m    subtract months from current date
+  -c    cost code
+  -u    username
+  -i    device id
 ```
 
 ## Note
