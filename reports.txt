@@ -25,3 +25,7 @@ Description:
 Name: Device Tracking
 Report: devicetracking
 Description: 
+
+Name: Device Usage
+Report: deviceusage
+Description: 
