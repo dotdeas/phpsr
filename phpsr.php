@@ -46,6 +46,11 @@
 	return($firstday.";".$lastday);
 	}
 
+	function convertbytes($bytes,$precision=2) {
+		$unit=array("B","KB","MB","GB","TB","PB","EB");
+		return @round($bytes/pow(1024,($i=floor(log($bytes,1024)))),$precision ).' '.$unit[$i];
+	}
+
 	function generateoutput($report,$data,$outfile,$startdate,$enddate) {
 		consolewrite("Saving report file ...");
 		switch($report) {
@@ -69,6 +74,9 @@
 				break;
 			case "devicetracking":
 				$reportname="Device Tracking";
+				break;
+			case "deviceusage":
+				$reportname="Device Usage";
 				break;
 			default:
 				$reportname=$report;
@@ -684,6 +692,89 @@
 		consolewrite("Done!");
 	}
 
+	function rep_deviceusage($odbc,$startdate,$enddate,$outfile) {
+		consolewrite("Generating device usage report ...");
+			$conn=odbc_connect($odbc,"","");
+				$devicesql=odbc_prepare($conn,"SELECT DeviceId,Name,Location FROM sccore.dbo.scDeviceInfo");
+				consolewrite("Collecting data from safecom ...");
+					odbc_execute($devicesql);
+						consolewrite("Compiles data ...");
+							$devicedata=array();
+								while($data=odbc_fetch_array($devicesql)) {
+									if(!array_key_exists($data["DeviceId"],$devicedata)) {
+										$devicedata[$data["DeviceId"]]["name"]=$data["Name"];
+										$devicedata[$data["DeviceId"]]["location"]=$data["Location"];
+										$devicedata[$data["DeviceId"]]["status"]="Active";
+										$devicedata[$data["DeviceId"]]["size"]=0;
+										$devicedata[$data["DeviceId"]]["pages"]=0;
+										$devicedata[$data["DeviceId"]]["simplex_bw"]=0;
+										$devicedata[$data["DeviceId"]]["simplex_clr"]=0;
+										$devicedata[$data["DeviceId"]]["duplex_bw"]=0;
+										$devicedata[$data["DeviceId"]]["duplex_clr"]=0;
+									}
+								}
+				$sql=odbc_prepare($conn,"SELECT DeviceId,DeviceName,DeviceLocation,TrackingPageCount,JobType,JobSize,JobPageFormat,JobIsDuplex,Price,TrackingColorPageCount,JobSheetCount FROM sctracking.dbo.scTracking WHERE (JobType='1' OR JobType='2' OR JobType='3') AND (StartDateTime BETWEEN '".$startdate." 00:00:00' AND '".$enddate." 23:59:59')");
+					odbc_execute($sql);
+						while($data=odbc_fetch_array($sql)) {
+							if(!array_key_exists($data["DeviceId"],$devicedata)) {
+								$devicedata[$data["DeviceId"]]["name"]=$data["DeviceName"];
+								$devicedata[$data["DeviceId"]]["location"]=$data["DeviceLocation"];
+								$devicedata[$data["DeviceId"]]["status"]="Deleted";
+								$devicedata[$data["DeviceId"]]["size"]=0;
+								$devicedata[$data["DeviceId"]]["pages"]=0;
+								$devicedata[$data["DeviceId"]]["simplex_bw"]=0;
+								$devicedata[$data["DeviceId"]]["simplex_clr"]=0;
+								$devicedata[$data["DeviceId"]]["duplex_bw"]=0;
+								$devicedata[$data["DeviceId"]]["duplex_clr"]=0;
+							}
+							if($data["JobPageFormat"]=="A3") {
+								$devicedata[$data["DeviceId"]]["size"]=$devicedata[$data["DeviceId"]]["size"]+$data["JobSize"];
+								if($data["JobIsDuplex"]=="1") {
+									$devicedata[$data["DeviceId"]]["duplex_bw"]=$devicedata[$data["DeviceId"]]["duplex_bw"]+($data["TrackingPageCount"]*2)-($data["TrackingColorPageCount"]*2);
+									$devicedata[$data["DeviceId"]]["duplex_clr"]=$devicedata[$data["DeviceId"]]["duplex_clr"]+($data["TrackingColorPageCount"]*2);
+									$devicedata[$data["DeviceId"]]["pages"]=$devicedata[$data["DeviceId"]]["pages"]+($data["TrackingPageCount"]*2);
+								} else {
+									$devicedata[$data["DeviceId"]]["simplex_bw"]=$devicedata[$data["DeviceId"]]["simplex_bw"]+($data["TrackingPageCount"]*2)-($data["TrackingColorPageCount"]*2);
+									$devicedata[$data["DeviceId"]]["simplex_clr"]=$devicedata[$data["DeviceId"]]["simplex_clr"]+($data["TrackingColorPageCount"]*2);
+									$devicedata[$data["DeviceId"]]["pages"]=$devicedata[$data["DeviceId"]]["pages"]+($data["TrackingPageCount"]*2);
+								}
+							} else {
+								$devicedata[$data["DeviceId"]]["size"]=$devicedata[$data["DeviceId"]]["size"]+$data["JobSize"];
+								if($data["JobIsDuplex"]=="1") {
+									$devicedata[$data["DeviceId"]]["duplex_bw"]=$devicedata[$data["DeviceId"]]["duplex_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["duplex_clr"]=$devicedata[$data["DeviceId"]]["duplex_clr"]+$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["pages"]=$devicedata[$data["DeviceId"]]["pages"]+$data["TrackingPageCount"];
+								} else {
+									$devicedata[$data["DeviceId"]]["simplex_bw"]=$devicedata[$data["DeviceId"]]["simplex_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["simplex_clr"]=$devicedata[$data["DeviceId"]]["simplex_clr"]+$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["pages"]=$devicedata[$data["DeviceId"]]["pages"]+$data["TrackingPageCount"];
+								}
+							}
+						}
+			odbc_close($conn);
+		consolewrite("Generating output ...");
+			$outputdata="Device ID;Device Name;Location;Status;Total Job Size;Total Pages;Simplex BW;Simplex Color;Duplex BW;Duplex Color\r\n";
+			foreach($devicedata as $key => $value) {
+				$outputdata.=$key.";";
+				$outputdata.=$devicedata[$key]["name"].";";
+				$outputdata.=$devicedata[$key]["location"].";";
+				$outputdata.=$devicedata[$key]["status"].";";
+				if($devicedata[$key]["size"]<>"0") {
+					$outputdata.=convertbytes($devicedata[$key]["size"]).";";
+				} else {
+					$outputdata.=$devicedata[$key]["size"].";";
+				}
+				$outputdata.=$devicedata[$key]["pages"].";";
+				$outputdata.=$devicedata[$key]["simplex_bw"].";";
+				$outputdata.=$devicedata[$key]["simplex_clr"].";";
+				$outputdata.=$devicedata[$key]["duplex_bw"].";";
+				$outputdata.=$devicedata[$key]["duplex_clr"].";";
+				$outputdata.="\r\n";
+			}
+		generateoutput("deviceusage",$outputdata,$outfile,$startdate,$enddate);
+		consolewrite("Done!");
+	}
+
 	// get options
 	$opts=getopt($options);
 
@@ -693,7 +784,7 @@
 	echo "|  _  ||     |  _  ||__     |      <\n";
 	echo "|   __||__|__|   __||_______|___|__|\n";
 	echo "|__|         |__|                   \n";
-	echo "\nVersion: 0.3.0-trunk_160912\n";
+	echo "\nVersion: 0.3.0-trunk_160919\n";
 	echo "Author: Andreas (andreas@dotdeas.se)\n\n";
 	if(isset($opts["h"])) {
 		printhelp();
@@ -743,6 +834,10 @@
 		if($opts["r"]=="devicetracking") {
 			$datedata=explode(";",checkstartend($options));
 			rep_devicetracking($opts["d"],$opts["i"],$datedata[0],$datedata[1],$outfile);
+		}
+		if($opts["r"]=="deviceusage") {
+			$datedata=explode(";",checkstartend($options));
+			rep_deviceusage($opts["d"],$datedata[0],$datedata[1],$outfile);
 		}
 	} else {
 		echo "No report selected!\n";
