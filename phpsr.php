@@ -730,13 +730,13 @@
 							if($data["JobPageFormat"]=="A3") {
 								$devicedata[$data["DeviceId"]]["size"]=$devicedata[$data["DeviceId"]]["size"]+$data["JobSize"];
 								if($data["JobIsDuplex"]=="1") {
-									$devicedata[$data["DeviceId"]]["duplex_bw"]=$devicedata[$data["DeviceId"]]["duplex_bw"]+($data["TrackingPageCount"]*2)-($data["TrackingColorPageCount"]*2);
-									$devicedata[$data["DeviceId"]]["duplex_clr"]=$devicedata[$data["DeviceId"]]["duplex_clr"]+($data["TrackingColorPageCount"]*2);
-									$devicedata[$data["DeviceId"]]["pages"]=$devicedata[$data["DeviceId"]]["pages"]+($data["TrackingPageCount"]*2);
+									$devicedata[$data["DeviceId"]]["duplex_bw"]=$devicedata[$data["DeviceId"]]["duplex_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["duplex_clr"]=$devicedata[$data["DeviceId"]]["duplex_clr"]+$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["pages"]=$devicedata[$data["DeviceId"]]["pages"]+$data["TrackingPageCount"];
 								} else {
-									$devicedata[$data["DeviceId"]]["simplex_bw"]=$devicedata[$data["DeviceId"]]["simplex_bw"]+($data["TrackingPageCount"]*2)-($data["TrackingColorPageCount"]*2);
-									$devicedata[$data["DeviceId"]]["simplex_clr"]=$devicedata[$data["DeviceId"]]["simplex_clr"]+($data["TrackingColorPageCount"]*2);
-									$devicedata[$data["DeviceId"]]["pages"]=$devicedata[$data["DeviceId"]]["pages"]+($data["TrackingPageCount"]*2);
+									$devicedata[$data["DeviceId"]]["simplex_bw"]=$devicedata[$data["DeviceId"]]["simplex_bw"]+$data["TrackingPageCount"]-$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["simplex_clr"]=$devicedata[$data["DeviceId"]]["simplex_clr"]+$data["TrackingColorPageCount"];
+									$devicedata[$data["DeviceId"]]["pages"]=$devicedata[$data["DeviceId"]]["pages"]+$data["TrackingPageCount"];
 								}
 							} else {
 								$devicedata[$data["DeviceId"]]["size"]=$devicedata[$data["DeviceId"]]["size"]+$data["JobSize"];
@@ -784,7 +784,7 @@
 	echo "|  _  ||     |  _  ||__     |      <\n";
 	echo "|   __||__|__|   __||_______|___|__|\n";
 	echo "|__|         |__|                   \n";
-	echo "\nVersion: 0.3.0-trunk_160919\n";
+	echo "\nVersion: 0.3.0-trunk_161005\n";
 	echo "Author: Andreas (andreas@dotdeas.se)\n\n";
 	if(isset($opts["h"])) {
 		printhelp();
